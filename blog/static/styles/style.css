@@ -27,18 +27,25 @@ div.post-body {
     padding: 5px 0px;
 }
 
-/*
 ul.comments {
-    margin: 10px 0px;
+    margin: 30px 0px;
     list-style-type: none;
+    padding: 0px;
 }
 
-.comment {
-    margin: 10px 0px;
-    border-bottom-color: #1a86c0;
+.comment-odd, .comment-even{
+    border-bottom-color: #dddddd;
     border-bottom-width: 2px;
-    border-bottom-style: dashed;
-}*/
+    border-bottom-style: solid;
+}
+
+.comment-odd {
+    background-color: #f5f5f5;
+}
+
+.comment-even {
+    background-color: #ffffff;
+}
 
 ul.sidebar {
     list-style-type: none;
