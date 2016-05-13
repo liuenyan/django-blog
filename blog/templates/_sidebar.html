@@ -1,0 +1,26 @@
+<ul class="sidebar">
+    <li>
+        <h5>标签</h5>
+        <ul>
+            {% for tag in tags %}
+            <li><a href="{% url 'tag' tag %}">{{ tag.tag }}&nbsp;({{tag.post_set.count }})</a></li>
+            {% endfor %}
+        </ul>
+    </li>
+    <li>
+        <h5>存档</h5>
+        <ul>
+            {% for archive in archives %}
+            <li><a href="{% url 'archive' archive.year archive.month %}">{{ archive.year }}年{{ archive.month }}月&nbsp;({{ archive.id__count }})</a></li>
+            {% endfor %}
+        </ul>
+    </li>
+    <li>
+        <h5>链接</h5>
+        <ul>
+            {% for link in links %}
+            <li><a href="#">{{ link }}</a></li>
+            {% endfor %}
+        </ul>
+    </li>
+</ul>

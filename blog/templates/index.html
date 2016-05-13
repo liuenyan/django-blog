@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}主页{% endblock %}
+
+{% block content %}
+{{ block.super }}
+<div class="page-header">
+    <h1>文章列表</h1>
+</div>
+<ul class="posts">
+    {% for post in posts %}
+    <li class="post">
+        <div class="post-title">
+            <h1><a href="{% url 'post' post.id %}">{{ post.title }}</a></h1>
+        </div>
+        <div class="post-info">
+            作者: {{ post.author.username }} 发表于 <span class="post-date">{{ post.timestamp | date:"c" }}</span>
+        </div>
+        <div class="post-body">
+            {{ post.body }}
+        </div>
+    </li>
+    {% endfor %}
+</ul>
+<nav>
+    <ul class="pager">
+        {% if posts.has_previous %}
+        <li class="previous"><a href="?page={{ posts.previous_page_number }}">前一页</a></li>
+        {% else %}
+        <li class="previous disabled"><a href="#">前一页</a></li>
+        {% endif %}
+        {% if posts.has_next %}
+        <li class="next"><a href="?page={{ posts.next_page_number }}">后一页</a></li>
+        {% else %}
+        <li class="next disabled"><a href="#">后一页</a></li>
+        {% endif %}
+    </ul>
+</nav>
+{% endblock %}
+
+{% block scripts %}
+{{ block.super }}
+<script src="//cdn.bootcss.com/moment.js/2.11.2/moment.min.js"></script>
+<script src="//cdn.bootcss.com/moment.js/2.11.2/locale/zh-cn.js"></script>
+<script>
+moment.locale('zh-cn');
+$('.post-date').each(function(){
+    var text = moment($(this).text()).fromNow();
+    $(this).text(text);
+});
+</script>
+{% endblock %}
