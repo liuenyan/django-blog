@@ -31,4 +31,10 @@ class Comment(models.Model):
         return self.comment
 
 
+class Link(models.Model):
+    name = models.CharField(max_length=128)
+    description = models.CharField(max_length=128)
+    link = models.URLField()
 
+    def __str__(self):
+        return self.name

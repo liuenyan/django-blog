@@ -9,7 +9,7 @@
     <h1>{{ post.title }}</h1>
 </div>
 <div class="post-info">
-    {{ post.author.username }} 发表于 <span class="from-now">{{ post.timestamp |date:'c' }}</span>
+    <span class="label label-danger">{{ post.author.username }}</span> 发表于 <span class="from-now">{{ post.timestamp |date:'c' }}</span>
     <span>
         {% for tag in post.tags.all %}
         <a href="{% url 'tag' tag %}"><span class="label label-primary">{{ tag }}</span></a>&nbsp;
