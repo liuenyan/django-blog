@@ -1,6 +1,9 @@
+bleach==1.4.2
+bleach-whitelist==0.0.7
 Django==1.9.5
 django-widget-tweaks==1.4.1
 fake-factory==0.5.7
+html5lib==0.9999999
 python-dateutil==2.5.3
 pytz==2016.4
 six==1.10.0

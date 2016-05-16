@@ -1,7 +1,8 @@
 from .models import Post, Tag, Comment
 from django.contrib.auth.models import User
 from faker import Factory
-
+import bleach
+from bleach_whitelist import generally_xss_safe
 
 def generate_fake_posts(nums=50):
     fake = Factory.create('en_US')
@@ -17,3 +18,5 @@ def generate_fake_comments(post, nums=10):
         comment = Comment(name=fake.name(), email=fake.email(), url=fake.url(), comment=fake.paragraph(), post=post)
         comment.save()
 
+def clean_html_tags(data):
+    return bleach.clean(data, generally_xss_safe)

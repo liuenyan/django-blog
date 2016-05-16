@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from .models import Post, Comment, Tag
 from .forms import EditPostForm, CommentForm
 from django.core.paginator import Paginator, InvalidPage
+from .tools import clean_html_tags
 # Create your views here.
 
 def index(request):
@@ -21,7 +22,11 @@ def post(request, post_id):
     if request.method == 'POST':
         form = CommentForm(request.POST)
         if form.is_valid():
-            comment = Comment(name=form.cleaned_data['name'], url=form.cleaned_data['url'], email=form.cleaned_data['email'], comment=form.cleaned_data['comment'], post=post)
+            comment = Comment(name=form.cleaned_data['name'], \
+                    url=form.cleaned_data['url'], \
+                    email=form.cleaned_data['email'], \
+                    comment=clean_html_tags(form.cleaned_data['comment']), \
+                    post=post)
             comment.save()
             return redirect('post', post_id)
     else:
@@ -44,7 +49,7 @@ def edit_post(request, post_id):
         form = EditPostForm(request.POST)
         if form.is_valid():
             post.title = form.cleaned_data['title']
-            post.body = form.cleaned_data['body']
+            post.body = clean_html_tags(form.cleaned_data['body'])
             tags = [Tag.objects.get_or_create(tag=tag)[0] \
                     for tag in filter(None, form.cleaned_data['tags'].split(','))]
             post.tags.set(tags)
@@ -65,7 +70,9 @@ def new_post(request):
     if request.method == 'POST':
         form = EditPostForm(request.POST)
         if form.is_valid():
-            post = Post(title=form.cleaned_data['title'], body=form.cleaned_data['body'], author=request.user)
+            post = Post(title=form.cleaned_data['title'], \
+                    body=clean_html_tags(form.cleaned_data['body']), \
+                    author=request.user)
             post.save()
             tags = [Tag.objects.get_or_create(tag=tag)[0] \
                     for tag in filter(None, form.cleaned_data['tags'].split(','))]

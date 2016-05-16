@@ -17,7 +17,7 @@
     </span>
 </div>
 <div class="post-body">
-    {{ post.body }}
+    {{ post.body |safe }}
 </div>
 <div class="post-controls">
     {% if post.author.id == user.id %}
@@ -30,8 +30,8 @@
     <ul class="comments">
         {% for comment in comments %}
         <li class="{% cycle 'comment-odd' 'comment-even' %}">
-            <p><span class="label label-default">#{{forloop.counter }}</span> <a href="{{ comment.url }}"><span class="label label-primary">{{ comment.name }}</span></a> 发布于 <span class="from-now">{{ comment.timestamp | date:'c' }}</span>
-            <p>{{ comment.comment }}</p>
+            <p><span class="label label-default">#{{forloop.counter }}</span> <a href="{{ comment.url }}"><span class="label label-primary">{{ comment.name }}</span></a> 发布于 <span class="from-now">{{ comment.timestamp | date:'c' }}</span></p>
+            {{ comment.comment | safe }}
         </li>
         {% endfor %}
     </ul>
