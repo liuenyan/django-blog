@@ -2,7 +2,10 @@
 {% load widget_tweaks %}
 
 {% block title %}编辑文章{% endblock %}
-
+{% block styles %}
+{{ block.super }}
+<link href="//cdn.bootcss.com/summernote/0.8.1/summernote.css" rel="stylesheet" />
+{% endblock %}
 {% block content %}
 {{ block.super }}
 <div class="page-header">
@@ -21,8 +24,32 @@
 
     <div class="form-group">
         {{ form.body.label_tag }}
-        {{ form.body | add_class:'form-control' }}
+        {{ form.body | add_class:'form-control' | attr:'style:display:none;' }}
+        <div class="summernote">
+        </div>
     </div>
     <input type="submit" class="btn btn-default" value="提交" />
 </form>
+{% endblock %}
+
+{% block scripts %}
+{{ block.super }}
+<script src="//cdn.bootcss.com/summernote/0.8.1/summernote.min.js"></script>
+<script src="//cdn.bootcss.com/summernote/0.8.1/lang/summernote-zh-CN.min.js"></script>
+<script>
+$(document).ready(function() {
+    var content = $('#id_body').val();
+    $('.summernote').summernote({
+        lang: 'zh-CN',
+        height: 300,
+        focus: true,
+    });
+    $('.summernote').summernote('code', content);
+});
+
+$('form').submit(function(){
+    var content = $('.summernote').summernote('code');
+    $('#id_body').val(content);
+});
+</script>
 {% endblock %}

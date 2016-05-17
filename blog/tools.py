@@ -19,4 +19,4 @@ def generate_fake_comments(post, nums=10):
         comment.save()
 
 def clean_html_tags(data):
-    return bleach.clean(data, generally_xss_safe)
+    return bleach.linkify(bleach.clean(data, generally_xss_safe))

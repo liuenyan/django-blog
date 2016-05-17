@@ -3,6 +3,11 @@
 
 {% block title %}{{ post.title }}{% endblock %}
 
+{% block styles %}
+{{ block.super }}
+<link href="//cdn.bootcss.com/highlight.js/9.3.0/styles/monokai.min.css" rel="stylesheet" />
+{% endblock %}
+
 {% block content %}
 {{ block.super }}
 <div class="page-header">
@@ -63,11 +68,20 @@
 {{ block.super }}
 <script src="//cdn.bootcss.com/moment.js/2.11.2/moment.min.js"></script>
 <script src="//cdn.bootcss.com/moment.js/2.11.2/locale/zh-cn.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/9.3.0/highlight.min.js"></script>
 <script>
-moment.locale('zh-cn');
-$('.from-now').each(function(){
-    var text = moment($(this).text()).fromNow();
-    $(this).text(text);
+$(document).ready(function(){
+    /* time from now */
+    moment.locale('zh-cn');
+    $('.from-now').each(function(){
+        var text = moment($(this).text()).fromNow();
+        $(this).text(text);
+    });
+    /* code highlight */
+    hljs.configure({useBR: true});
+    $('pre code').each(function(i, block){
+        hljs.highlightBlock(block);
+    });
 });
 </script>
 {% endblock %}
