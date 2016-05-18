@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load widget_tweaks %}
+{% load blog_extras %}
 
 {% block title %}{{ post.title }}{% endblock %}
 
@@ -35,8 +36,11 @@
     <ul class="comments">
         {% for comment in comments %}
         <li class="{% cycle 'comment-odd' 'comment-even' %}">
-            <p><span class="label label-default">#{{forloop.counter }}</span> <a href="{{ comment.url }}"><span class="label label-primary">{{ comment.name }}</span></a> 发布于 <span class="from-now">{{ comment.timestamp | date:'c' }}</span></p>
-            {{ comment.comment | safe }}
+            <img src="{{ comment.email | gravatar }}" class="comment-avatar" />
+            <div class="comment-body">
+                <p><span class="label label-default">#{{forloop.counter }}</span> <a href="{{ comment.url }}"><span class="label label-primary">{{ comment.name }}</span></a> 发布于 <span class="from-now">{{ comment.timestamp | date:'c' }}</span></p>
+                {{ comment.comment | safe }}
+            </div>
         </li>
         {% endfor %}
     </ul>

@@ -49,6 +49,7 @@ ul.comments {
     border-bottom-color: #dddddd;
     border-bottom-width: 2px;
     border-bottom-style: solid;
+    min-height: 80px;
 }
 
 .comment-odd {
@@ -57,6 +58,16 @@ ul.comments {
 
 .comment-even {
     background-color: #ffffff;
+}
+
+.comment-avatar {
+    position: absolute;
+    margin: 10px 0px;
+}
+
+.comment-body {
+    margin: 0px 10px 0px 70px;
+    padding: 10px 0px;
 }
 
 ul.sidebar {
