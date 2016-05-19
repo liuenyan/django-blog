@@ -8,7 +8,7 @@ class EditPostForm(forms.Form):
 
 class CommentForm(forms.Form):
     name = forms.CharField(label=u'姓名', max_length=256)
-    url = forms.URLField(label=u'网站')
+    url = forms.URLField(label=u'网站', required=False)
     email = forms.EmailField(label=u'邮件地址')
     comment = forms.CharField(label=u'评论', widget=forms.Textarea)
 

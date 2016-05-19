@@ -22,7 +22,7 @@ class Post(models.Model):
 class Comment(models.Model):
     name = models.CharField(max_length=256)
     email = models.EmailField()
-    url = models.URLField()
+    url = models.URLField(blank=True)
     comment = models.TextField()
     timestamp = models.DateTimeField(auto_now=True)
     post = models.ForeignKey('Post')
