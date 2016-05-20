@@ -1,35 +1,46 @@
-/*
-.navbar {
-    background-color: #1a86c0;
-    border: none;
-    color: #ffffff;
-}*/
-
 ul.posts {
     list-style-type: none;
     padding: 0px; 
 }
 
 li.post {
-    margin: 10px;
-    border-radius: 5px;
-    background-color: #f5f5f5;
-}
-
-div.post-info, div.post-body{
-    margin: 10px 0px;
-    padding: 5px 5px;
-    background-color: #f5f5f5;
+    padding: 10px 0px;
     border-bottom-color: #dddddd;
-    border-bottom-style: solid;
+    border-bottom-style:solid;
     border-bottom-width: 2px;
-    border-radius: 5px;
 }
 
-div.post-info{
-       
+.post-title {
+    margin: 30px 0px;
 }
 
+.post-title a {
+    text-decoration: none;
+}
+
+.post-body {
+    margin: 30px 0px;
+    font-size: 120%;
+    line-height: 150%;
+}
+
+.post-meta {
+    background-color: #f5f5f5;
+}
+
+.post-meta > ul {
+    list-style-type: none;
+    padding: 10px 0px;
+
+}
+
+.post-meta > ul > li {
+    display: inline;
+    margin: 5px;
+}
+.post-meta > ul > li > span > a {
+    color: #eee;
+}
 .post-controls {
     min-height: 50px;
 }
@@ -40,12 +51,12 @@ div.post-info{
 }
 
 ul.comments {
-    margin: 30px 0px;
+    margin: 15px 0px;
     list-style-type: none;
-    padding: 0px;
+    padding: 15px 0px;
 }
 
-.comment-odd, .comment-even{
+.comment-odd, .comment-even {
     border-bottom-color: #dddddd;
     border-bottom-width: 2px;
     border-bottom-style: solid;
@@ -58,6 +69,10 @@ ul.comments {
 
 .comment-even {
     background-color: #ffffff;
+}
+
+.comments li span a {
+    color: #eee;
 }
 
 .comment-avatar {
@@ -75,19 +90,18 @@ ul.sidebar {
     margin: 10px 0px;
     padding: 10px 10px;
     border-radius: 5px;
-    background-color: #f5f5f5;
 }
 
 ul.sidebar > li {
     border-bottom-color: #dddddd;
     border-bottom-style: solid;
     border-bottom-width: 2px;
+    padding: 10px;
+    background-color: #f5f5f5;
 }
 
-ul.sidebar > li > h5 {
+ul.sidebar > li > h4 {
     padding: 10px;
-    color: #ffffff;
-    background-color: #337ab7;
 }
 
 ul.sidebar > li > ul {
@@ -95,3 +109,10 @@ ul.sidebar > li > ul {
     padding: 10px;
 }
 
+.page-footer {
+    padding: 10px;
+    text-align: center;
+    background-color: #f5f5f5;
+    min-height: 100px;
+    border-top-color:#dddddd;
+}

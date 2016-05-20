@@ -11,16 +11,19 @@
 
 {% block content %}
 {{ block.super }}
-<div class="page-header">
+<div class="post-title">
     <h1>{{ post.title }}</h1>
 </div>
-<div class="post-info">
-    <span class="label label-danger">{{ post.author.username }}</span> 发表于 <span class="from-now">{{ post.timestamp |date:'c' }}</span>
-    <span>
-        {% for tag in post.tags.all %}
-        <a href="{% url 'tag' tag %}"><span class="label label-primary">{{ tag }}</span></a>&nbsp;
-        {% endfor %}
-    </span>
+<div class="post-meta">
+    <ul>
+        <li><i class="fa fa-user"></i> {{ post.author.username }}</li>
+        <li><i class="fa fa-clock-o"></i> <span class="from-now">{{ post.timestamp | date:"c" }}</span></li>
+        <li><i class="fa fa-tags"></i>
+            {% for tag in post.tags.all %}
+            <a href="{% url 'tag' tag %}"><span class="label label-primary">{{ tag }}</span></a>&nbsp;
+            {% endfor %}
+        </li>
+    </ul>
 </div>
 <div class="post-body">
     {{ post.body |safe }}
@@ -32,7 +35,7 @@
     {% endif %}
 </div>
 <div class="post-comments">
-   <h4><span class="glyphicon glyphicon-comment"></span> 评论列表</h4>
+   <h4><i class="fa fa-comments fa-lg"></i> 评论列表</h4>
     <ul class="comments">
         {% for comment in comments %}
         <li class="{% cycle 'comment-odd' 'comment-even' %}">
@@ -41,9 +44,7 @@
                 <p>
                     <span class="label label-default">#{{forloop.counter }}</span>
                     {% if comment.url %}
-                    <a href="{{ comment.url }}">
-                        <span class="label label-primary">{{ comment.name }}</span>
-                    </a>
+                    <span class="label label-primary"><a href="{{ comment.url }}">{{ comment.name }}</a></span>
                     {% else %}
                     <span class="label label-primary">{{ comment.name }}</span>
                     {% endif %}
@@ -54,7 +55,7 @@
         </li>
         {% endfor %}
     </ul>
-    <h4><span class="glyphicon glyphicon-comment"></span> 留下您的评论</h4>
+    <h4><i class="fa fa-comment fa-lg"></i> 留下您的评论</h4>
     <form action="" method="POST">
         {% csrf_token %}
         <div class="form-group">

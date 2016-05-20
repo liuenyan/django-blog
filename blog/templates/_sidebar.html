@@ -1,12 +1,6 @@
 <ul class="sidebar">
     <li>
-        <h5><span class="glyphicon glyphicon-star"></span>&nbsp;RSS</h5>
-        <ul>
-            <li><img src="/static/icons/feed-icon-14x14.png" /> <a href="{% url 'feed' %}">订阅本站</a></li>
-        </ul>
-    </li>
-    <li>
-        <h5><span class="glyphicon glyphicon-tags"></span> 标签</h5>
+        <h4><i class="fa fa-tags fa-lg"></i> 标签</h4>
         <ul>
             {% for tag in tags %}
             <li><a href="{% url 'tag' tag %}">{{ tag.tag }}&nbsp;({{tag.post_set.count }})</a></li>
@@ -14,7 +8,7 @@
         </ul>
     </li>
     <li>
-        <h5><span class="glyphicon glyphicon-folder-open"></span> 存档</h5>
+        <h4><i class="fa fa-archive fa-lg"></i> 存档</h4>
         <ul>
             {% for archive in archives %}
             <li><a href="{% url 'archive' archive.year archive.month %}">{{ archive.year }}年{{ archive.month }}月&nbsp;({{ archive.id__count }})</a></li>
@@ -22,7 +16,7 @@
         </ul>
     </li>
     <li>
-        <h5><span class="glyphicon glyphicon-link"></span> 链接</h5>
+        <h4><i class="fa fa-link fa-lg"></i> 链接</h4>
         <ul>
             {% for link in links %}
             <li><a href="{{ link.link }}">{{ link.name }}</a></li>
