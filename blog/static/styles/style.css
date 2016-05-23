@@ -1,3 +1,13 @@
+html, body {
+    height: 100%;
+}
+
+body > div.container {
+    min-height: 100%;
+    padding-top: 50px; /* for navbar */
+    padding-bottom: 80px; /*for footer */
+}
+
 ul.posts {
     list-style-type: none;
     padding: 0px; 
@@ -110,9 +120,11 @@ ul.sidebar > li > ul {
 }
 
 .page-footer {
+    margin-top: -80px;
     padding: 10px;
     text-align: center;
     background-color: #f5f5f5;
-    min-height: 100px;
+    height: 80px;
     border-top-color:#dddddd;
 }
+
