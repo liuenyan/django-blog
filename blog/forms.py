@@ -12,3 +12,7 @@ class CommentForm(forms.Form):
     email = forms.EmailField(label=u'邮件地址')
     comment = forms.CharField(label=u'评论', widget=forms.Textarea)
 
+class EditProfileForm(forms.Form):
+    first_name = forms.CharField(label=u'名字', max_length=30)
+    last_name = forms.CharField(label=u'姓氏', max_length=30)
+    email = forms.EmailField(label=u'邮件地址')

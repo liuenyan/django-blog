@@ -1,9 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .models import Post, Comment, Tag
-from .forms import EditPostForm, CommentForm
+from .forms import EditPostForm, CommentForm, EditProfileForm
 from django.core.paginator import Paginator, InvalidPage
 from .tools import clean_html_tags
+from django.contrib.auth.forms import UserChangeForm
+from django.contrib import messages
 # Create your views here.
 
 def index(request):
@@ -54,6 +56,7 @@ def edit_post(request, post_id):
                     for tag in filter(None, form.cleaned_data['tags'].split(','))]
             post.tags.set(tags)
             post.save()
+            messages.add_message(request, messages.SUCCESS, '文章已更新')
             return redirect('post', post_id)
     else:
         data = {
@@ -114,3 +117,29 @@ def archive(request, year, month):
         posts = paginator.page(1)
     return render(request, 'index.html', context={'posts': posts})
 
+@login_required
+def profile(request):
+    return render(request, 'profile.html')
+
+@login_required
+def change_profile(request):
+    current_user = request.user
+    if request.method == 'POST':
+        form = EditProfileForm(request.POST)
+        if form.is_valid():
+            current_user.first_name = form.cleaned_data['first_name']
+            current_user.last_name = form.cleaned_data['last_name']
+            current_user.email = form.cleaned_data['email']
+            current_user.save()
+            messages.add_message(request, messages.SUCCESS, '个人资料已更新')
+        else:
+            messages.add_message(request, messages.ERROR, '数据格式错误，个人资料未更新')
+        return redirect('profile')
+    else:
+        data = {
+                'first_name': current_user.first_name,
+                'last_name': current_user.last_name,
+                'email': current_user.email
+                }
+        form = EditProfileForm(data)
+        return render(request, 'change_profile.html', context={'form': form})

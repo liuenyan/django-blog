@@ -17,3 +17,12 @@ def gravatar(email, size=60, default='identicon'):
     md5 = hashlib.md5(email.encode('utf8').lower()).hexdigest()
     gravatar_url = "//cdn.v2ex.com/gravatar/{0}?s={1}&d={2}".format(md5, str(size), default)
     return gravatar_url
+
+@register.filter
+def alert_class(level_tag):
+    if level_tag == 'error':
+        return 'alert-danger'
+    elif level_tag in ['info', 'success', 'warning']:
+        return 'alert-{0}'.format(level_tag)
+    else:
+        return 'alert-info'

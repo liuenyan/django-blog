@@ -13,4 +13,6 @@ urlpatterns = [
     url(r'^post/feed/$', PostFeed(), name='feed'),
     url(r'^tag/([a-zA-Z0-9\+\-_]+)/$', views.tag, name='tag'),
     url(r'^archive/(\d{4})/(\d{2})/$', views.archive, name='archive'),
+    url(r'^profile/$', views.profile, name='profile'),
+    url(r'^profile/change/$', views.change_profile, name='change_profile'),
 ]

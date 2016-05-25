@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% load blog_extras %}
+{% block content %}
+<div class="page-header">
+    <h1>个人资料</h1>
+</div>
+<img src="{{ user.email | gravatar:140 }}" class="img-responsive img-rounded">
+<p></p>
+<p>名字: {{ user.first_name }}</p>
+<p>姓氏: {{ user.last_name }}</p>
+<p>电子邮件: {{ user.email }}</p>
+{% endblock %}
