@@ -1,6 +1,5 @@
 {% extends "base.html" %}
-{% load widget_tweaks %}
-{% load blog_extras %}
+{% load widget_tweaks blog_extras %}
 
 {% block title %}{{ post.title }}{% endblock %}
 
@@ -11,37 +10,38 @@
 
 {% block content %}
 {{ block.super }}
-<div class="post-title">
-    <h1>{{ post.title }}</h1>
-</div>
-<div class="post-meta">
-    <ul>
-        <li><i class="fa fa-user"></i> {{ post.author.username }}</li>
-        <li><i class="fa fa-clock-o"></i> <span class="from-now">{{ post.timestamp | date:"c" }}</span></li>
-        <li><i class="fa fa-tags"></i>
-            {% for tag in post.tags.all %}
-            <a href="{% url 'tag' tag %}"><span class="label label-primary">{{ tag }}</span></a>&nbsp;
-            {% endfor %}
-        </li>
-    </ul>
-</div>
-<div class="post-body">
-    {{ post.body |safe }}
-</div>
-<div class="post-controls">
-    {% if post.author.id == user.id %}
-    <a href="{% url 'edit_post' post.id %}" class="btn btn-primary"><span class="glyphicon glyphicon-edit"></span> 编辑</a>
-    <a href="{% url 'delete_post' post.id %}" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> 删除</a>
-    {% endif %}
-</div>
-<div class="post-comments">
-   <h4><i class="fa fa-comments fa-lg"></i> 评论列表</h4>
-    <ul class="comments">
-        {% for comment in comments %}
-        <li class="{% cycle 'comment-odd' 'comment-even' %}">
-            <img src="{{ comment.email | gravatar }}" class="comment-avatar" />
-            <div class="comment-body">
-                <p>
+<div class="col-md-8">
+    <div class="post-title">
+        <h1>{{ post.title }}</h1>
+    </div>
+    <div class="post-meta">
+        <ul>
+            <li><i class="fa fa-user"></i> {{ post.author.username }}</li>
+            <li><i class="fa fa-clock-o"></i> <span class="from-now">{{ post.timestamp | date:"c" }}</span></li>
+            <li><i class="fa fa-tags"></i>
+                {% for tag in post.tags.all %}
+                <a href="{% url 'tag' tag %}"><span class="label label-primary">{{ tag }}</span></a>&nbsp;
+                {% endfor %}
+            </li>
+        </ul>
+    </div>
+    <div class="post-body">
+        {{ post.body |safe }}
+    </div>
+    <div class="post-controls">
+        {% if post.author.id == user.id %}
+        <a href="{% url 'edit_post' post.id %}" class="btn btn-primary"><span class="glyphicon glyphicon-edit"></span> 编辑</a>
+        <a href="{% url 'delete_post' post.id %}" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> 删除</a>
+        {% endif %}
+    </div>
+    <div class="post-comments">
+        <h4><i class="fa fa-comments fa-lg"></i> 评论列表</h4>
+        <ul class="comments">
+            {% for comment in comments %}
+            <li class="{% cycle 'comment-odd' 'comment-even' %}">
+                <img src="{{ comment.email | gravatar }}" class="comment-avatar" />
+                <div class="comment-body">
+                    <p>
                     <span class="label label-default">#{{forloop.counter }}</span>
                     {% if comment.url %}
                     <span class="label label-primary"><a href="{{ comment.url }}">{{ comment.name }}</a></span>
@@ -49,33 +49,37 @@
                     <span class="label label-primary">{{ comment.name }}</span>
                     {% endif %}
                     发布于 <span class="from-now">{{ comment.timestamp | date:'c' }}</span>
-                </p>
-                {{ comment.comment | safe }}
+                    </p>
+                    {{ comment.comment | safe }}
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+        <h4><i class="fa fa-comment fa-lg"></i> 留下您的评论</h4>
+        <form action="" method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                {{ form.name.label_tag }}
+                {{ form.name | add_class:'form-control'| attr:'placeholder:您的名字' }}
             </div>
-        </li>
-        {% endfor %}
-    </ul>
-    <h4><i class="fa fa-comment fa-lg"></i> 留下您的评论</h4>
-    <form action="" method="POST">
-        {% csrf_token %}
-        <div class="form-group">
-            {{ form.name.label_tag }}
-            {{ form.name | add_class:'form-control'| attr:'placeholder:您的名字' }}
-        </div>
-        <div class="form-group">
-            {{ form.url.label_tag }}
-            {{ form.url | add_class:'form-control' | attr:'placeholder:http://'}}
-        </div>
-        <div class=form-group>
-            {{ form.email.label_tag }}
-            {{ form.email | add_class:'form-control' |attr:'placeholder:user@example.com'}}
-        </div>
-        <div class="form-group">
-            {{ form.comment.label_tag }}
-            {{ form.comment | add_class:'form-control' |attr:'placeholder:输入您的评论'}}
-        </div>
-        <input type="submit" class="btn btn-primary" value="提交">   
-    </form>
+            <div class="form-group">
+                {{ form.url.label_tag }}
+                {{ form.url | add_class:'form-control' | attr:'placeholder:http://'}}
+            </div>
+            <div class=form-group>
+                {{ form.email.label_tag }}
+                {{ form.email | add_class:'form-control' |attr:'placeholder:user@example.com'}}
+            </div>
+            <div class="form-group">
+                {{ form.comment.label_tag }}
+                {{ form.comment | add_class:'form-control' |attr:'placeholder:输入您的评论'}}
+            </div>
+            <input type="submit" class="btn btn-primary" value="提交">
+        </form>
+    </div>
+</div>
+<div class="col-md-4">
+    {% show_sidebar %}
 </div>
 {% endblock %}
 

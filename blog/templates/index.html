@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load blog_extras %}
 
 {% block title %}主页{% endblock %}
 {% block styles %}
@@ -7,43 +8,48 @@
 {% endblock %}
 {% block content %}
 {{ block.super }}
-<ul class="posts">
-    {% for post in posts %}
-    <li class="post">
-        <div class="post-title">
-            <h1><a href="{% url 'post' post.id %}">{{ post.title }}</a></h1>
-        </div>
-        <div class="post-meta">
-            <ul>
-                <li><i class="fa fa-user"></i> {{ post.author.username }}</li>
-                <li><i class="fa fa-clock-o"></i> <span class="post-date">{{ post.timestamp | date:"c" }}</span></li>
-                <li><i class="fa fa-tags"></i>
-                    {% for tag in post.tags.all %}
-                    <span class="label label-primary"><a href="{% url 'tag' tag %}">{{ tag }}</a></span>&nbsp;
-                    {% endfor %}
-                </li>
-            </ul>
-        </div>
-        <div class="post-body">
-            {{ post.body |truncatechars_html:200 | safe }}
-        </div>
-    </li>
-    {% endfor %}
-</ul>
-<nav>
-    <ul class="pager">
-        {% if posts.has_previous %}
-        <li class="previous"><a href="?page={{ posts.previous_page_number }}">前一页</a></li>
-        {% else %}
-        <li class="previous disabled"><a href="#">前一页</a></li>
-        {% endif %}
-        {% if posts.has_next %}
-        <li class="next"><a href="?page={{ posts.next_page_number }}">后一页</a></li>
-        {% else %}
-        <li class="next disabled"><a href="#">后一页</a></li>
-        {% endif %}
+<div class="col-md-8">
+    <ul class="posts">
+        {% for post in posts %}
+        <li class="post">
+            <div class="post-title">
+                <h1><a href="{% url 'post' post.id %}">{{ post.title }}</a></h1>
+            </div>
+            <div class="post-meta">
+                <ul>
+                    <li><i class="fa fa-user"></i> {{ post.author.username }}</li>
+                    <li><i class="fa fa-clock-o"></i> <span class="post-date">{{ post.timestamp | date:"c" }}</span></li>
+                    <li><i class="fa fa-tags"></i>
+                        {% for tag in post.tags.all %}
+                        <span class="label label-primary"><a href="{% url 'tag' tag %}">{{ tag }}</a></span>&nbsp;
+                        {% endfor %}
+                    </li>
+                </ul>
+            </div>
+            <div class="post-body">
+                {{ post.body |truncatechars_html:200 | safe }}
+            </div>
+        </li>
+        {% endfor %}
     </ul>
-</nav>
+    <nav>
+        <ul class="pager">
+            {% if posts.has_previous %}
+            <li class="previous"><a href="?page={{ posts.previous_page_number }}">前一页</a></li>
+            {% else %}
+            <li class="previous disabled"><a href="#">前一页</a></li>
+            {% endif %}
+            {% if posts.has_next %}
+            <li class="next"><a href="?page={{ posts.next_page_number }}">后一页</a></li>
+            {% else %}
+            <li class="next disabled"><a href="#">后一页</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+</div>
+<div class="col-md-4">
+    {% show_sidebar %}
+</div>
 {% endblock %}
 
 {% block scripts %}
