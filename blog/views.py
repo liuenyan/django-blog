@@ -8,6 +8,10 @@ from django.contrib.auth.forms import UserChangeForm
 from django.contrib import messages
 # Create your views here.
 
+@login_required
+def about(request):
+    return render(request, 'about.html')
+
 def index(request):
     post_list = Post.objects.all().order_by('-id')
     paginator = Paginator(post_list, 10)
@@ -41,6 +45,9 @@ def post(request, post_id):
                 }
         return render(request, 'post.html', context)
 
+def post_with_disqus(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    return render(request, 'post_with_disqus.html', {'post': post,})
 
 @login_required
 def edit_post(request, post_id):

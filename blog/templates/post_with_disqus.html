@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% load widget_tweaks blog_extras %}
+
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block styles %}
+{{ block.super }}
+<link href="//cdn.bootcss.com/highlight.js/9.3.0/styles/monokai.min.css" rel="stylesheet" />
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+<div class="col-md-8">
+    <div class="post-title">
+        <h1>{{ post.title }}</h1>
+    </div>
+    <div class="post-meta">
+        <ul>
+            <li><i class="fa fa-user"></i> {{ post.author.username }}</li>
+            <li><i class="fa fa-clock-o"></i> <span class="from-now">{{ post.timestamp | date:"c" }}</span></li>
+            <li><i class="fa fa-tags"></i>
+                {% for tag in post.tags.all %}
+                <a href="{% url 'tag' tag %}"><span class="label label-primary">{{ tag }}</span></a>&nbsp;
+                {% endfor %}
+            </li>
+        </ul>
+    </div>
+    <div class="post-body">
+        {{ post.body |safe }}
+    </div>
+    <div class="post-controls">
+        {% if post.author.id == user.id %}
+        <a href="{% url 'edit_post' post.id %}" class="btn btn-primary"><span class="glyphicon glyphicon-edit"></span> 编辑</a>
+        <a href="{% url 'delete_post' post.id %}" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> 删除</a>
+        {% endif %}
+    </div>
+    <div id="disqus_thread"></div>
+</div>
+<div class="col-md-4">
+    {% show_sidebar %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+{{ block.super }}
+<script src="//cdn.bootcss.com/moment.js/2.11.2/moment.min.js"></script>
+<script src="//cdn.bootcss.com/moment.js/2.11.2/locale/zh-cn.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/9.3.0/highlight.min.js"></script>
+<script>
+/**
+* RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+* LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+*/
+var disqus_config = function () {
+    this.page.url = "https://enyan.me" + window.location.pathname; // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = {{ post.id }}; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+(function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = '//enyanme.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+})();
+$(document).ready(function(){
+    /* time from now */
+    moment.locale('zh-cn');
+    $('.from-now').each(function(){
+        var text = moment($(this).text()).fromNow();
+        $(this).text(text);
+    });
+    /* code highlight */
+    hljs.configure({useBR: true});
+    $('pre code').each(function(i, block){
+        hljs.highlightBlock(block);
+    });
+});
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+{% endblock %}
