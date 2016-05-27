@@ -127,4 +127,5 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = '/auth/login/'
 LOGOUT_URL = '/auth/logout/'
-
+# INTERNAL_IPS for debug https://docs.djangoproject.com/en/1.9/ref/settings/#internal-ips
+INTERNAL_IPS = ['0.0.0.0', '127.0.0.1',]
