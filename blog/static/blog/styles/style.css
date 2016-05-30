@@ -30,8 +30,8 @@ li.post {
 
 .post-body {
     margin: 30px 0px;
-    font-size: 120%;
-    line-height: 150%;
+    /*font-size: 120%;
+    line-height: 150%;*/
 }
 
 .post-meta {

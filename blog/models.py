@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.sitemaps import ping_google
 
 # Create your models here.
 
@@ -15,6 +16,17 @@ class Post(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey('auth.User')
     tags = models.ManyToManyField(Tag)
+
+    def save(self, force_insert=False, force_update=False):
+        super(Post, self).save(force_insert, force_update)
+        try:
+            ping_google()
+        except Exception:
+            pass
+
+    def get_absolute_url(self):
+        from django.core.urlresolvers import reverse
+        return reverse('post', args=[str(self.id)])
 
     def __str__(self):
         return self.title
