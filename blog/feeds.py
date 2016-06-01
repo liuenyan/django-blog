@@ -18,6 +18,3 @@ class PostFeed(Feed):
 
     def item_description(self, item):
         return item.body
-
-    def item_link(self, item):
-        return reverse(views.post, args=[item.id])

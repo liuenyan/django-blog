@@ -3,7 +3,7 @@ from . import views
 from django.contrib.auth import views as auth_views
 from .feeds import PostFeed
 from django.contrib.sitemaps.views import sitemap
-from .sitemap import StaticSitemap, PostSitemap
+from .sitemaps import StaticSitemap, PostSitemap
 
 sitemaps = {
     'static': StaticSitemap,
