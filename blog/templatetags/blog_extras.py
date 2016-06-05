@@ -5,6 +5,10 @@ import hashlib
 
 register = template.Library()
 
+@register.inclusion_tag('_navbar.html')
+def show_navbar(active):
+    return {'active': active}
+
 @register.inclusion_tag('_sidebar.html')
 def show_sidebar():
     tags = Tag.objects.all()

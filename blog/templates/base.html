@@ -21,7 +21,9 @@
         {% endblock %}
     </head>
     <body>
-        {% include "_navbar.html" %}
+        {% block navbar %}
+        {% show_navbar 'home' %}
+        {% endblock %}
         <div class="container">
             {% if messages %}
             <div class="row">
