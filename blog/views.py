@@ -8,7 +8,7 @@ from django.contrib.auth.forms import UserChangeForm
 from django.contrib import messages
 # Create your views here.
 
-@login_required
+#@login_required
 def about(request):
     return render(request, 'about.html')
 

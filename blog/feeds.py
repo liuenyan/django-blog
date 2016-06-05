@@ -7,7 +7,7 @@ from . import views
 class PostFeed(Feed):
     feed_type = Atom1Feed
     title = "学习笔记"
-    link = "/post/feed/"
+    link = "/"
     subtitle = "恩岩的学习笔记"
 
     def items(self):

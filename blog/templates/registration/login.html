@@ -6,10 +6,15 @@
 
 {% if next %}
 {% if user.is_authenticated %}
-<p>Your account doesn't have access to this page. To proceed,
-please login with an account that has access.</p>
+<div class="alert alert-warning alert-dismissible" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    你的账户没有权限访问此页。请使用有权限的账户重新登录。
+</div>
 {% else %}
-<p>Please login to see this page.</p>
+<div class="alert alert-warning alert-dismissible" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    请登录来查看此页。
+</div>
 {% endif %}
 {% endif %}
 
@@ -18,33 +23,31 @@ please login with an account that has access.</p>
     <h1>您已经登录</h1>
 </div>
 {% else %}
-<div class="row">
-    <div class="col-md-4 col-md-offset-4">
-        <div class="page-header">
-            <h1>请登录</h1>
-        </div>
-        <form method="post" action="{% url 'login' %}">
-            {% csrf_token %}
-            <div class="form-group">
-                {{ form.username.label_tag }}
-                {{ form.username | add_class:'form-control' }}
-            </div>
-            <div class="form-group">
-                {{ form.password.label_tag }}
-                {{ form.password | add_class:'form-control' }}
-            </div>
-            <input class="btn btn-default" type="submit" value="登录" />
-            <input type="hidden" name="next" value="{{ next }}" />
-        </form>
-        {% if form.errors %}
-        <div class="alert alert-warning alert-dismissible" role="alert">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            用户名和密码不匹配, 请重试。
-        </div>
-        {% endif %}
-        {# Assumes you setup the password_reset view in your URLconf #}
-        {# <p><a href="{% url 'password_reset' %}">忘记密码?</a></p> #}
+<div class="col-md-4 col-md-offset-4">
+    <div class="page-header">
+        <h1>请登录</h1>
     </div>
+    <form method="post" action="{% url 'login' %}">
+        {% csrf_token %}
+        <div class="form-group">
+            {{ form.username.label_tag }}
+            {{ form.username | add_class:'form-control' }}
+        </div>
+        <div class="form-group">
+            {{ form.password.label_tag }}
+            {{ form.password | add_class:'form-control' }}
+        </div>
+        <input class="btn btn-default" type="submit" value="登录" />
+        <input type="hidden" name="next" value="{{ next }}" />
+    </form>
+    {% if form.errors %}
+    <div class="alert alert-warning alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        用户名和密码不匹配, 请重试。
+    </div>
+    {% endif %}
+    {# Assumes you setup the password_reset view in your URLconf #}
+    {# <p><a href="{% url 'password_reset' %}">忘记密码?</a></p> #}
 </div>
 {% endif %}
 {% endblock %}
