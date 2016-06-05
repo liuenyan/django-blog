@@ -6,8 +6,8 @@ import hashlib
 register = template.Library()
 
 @register.inclusion_tag('_navbar.html')
-def show_navbar(active):
-    return {'active': active}
+def show_navbar(active, user):
+    return {'active': active, 'user': user}
 
 @register.inclusion_tag('_sidebar.html')
 def show_sidebar():
