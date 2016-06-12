@@ -112,7 +112,8 @@ def tag(request, tagname):
         posts = paginator.page(page)
     except InvalidPage:
         posts = paginator.page(1)
-    return render(request, 'index.html', context={'posts': posts})
+    title = '标签为{0}的文章'.format(tagname)
+    return render(request, 'index.html', context={'title': title, 'posts': posts})
 
 def archive(request, year, month):
     post_list = Post.objects.filter(timestamp__year=year).filter(timestamp__month=month).order_by('-id')
@@ -122,7 +123,8 @@ def archive(request, year, month):
         posts = paginator.page(page)
     except InvalidPage:
         posts = paginator.page(1)
-    return render(request, 'index.html', context={'posts': posts})
+    title = '{0}年{1}月的归档'.format(year, month)
+    return render(request, 'index.html', context={'title': title, 'posts': posts})
 
 @login_required
 def profile(request):

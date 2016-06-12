@@ -8,7 +8,7 @@
         </ul>
     </li>
     <li>
-        <h4><i class="fa fa-archive fa-lg"></i> 存档</h4>
+        <h4><i class="fa fa-archive fa-lg"></i> 归档</h4>
         <ul>
             {% for archive in archives %}
             <li><a href="{% url 'archive' archive.year archive.month %}">{{ archive.year }}年{{ archive.month }}月&nbsp;({{ archive.id__count }})</a></li>

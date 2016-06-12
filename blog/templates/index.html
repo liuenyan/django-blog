@@ -1,7 +1,8 @@
 {% extends "base.html" %}
 {% load blog_extras %}
 
-{% block title %}主页{% endblock %}
+{% block title %}{% if title %}{{ title }}{% else %}主页 - 学习笔记{% endif %}{% endblock %}
+
 {% block styles %}
 {{ block.super }}
 <link href="//cdn.bootcss.com/highlight.js/9.3.0/styles/monokai.min.css" rel="stylesheet" />
