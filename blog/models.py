@@ -17,8 +17,9 @@ class Post(models.Model):
     author = models.ForeignKey('auth.User')
     tags = models.ManyToManyField(Tag)
 
-    def save(self, force_insert=False, force_update=False):
-        super(Post, self).save(force_insert, force_update)
+    def save(self, force_insert=False, force_update=False, using=None,
+             update_fields=None):
+        super(Post, self).save(force_insert, force_update, using, update_fields)
         try:
             ping_google()
         except Exception:
@@ -30,6 +31,7 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
+
 
 class Comment(models.Model):
     name = models.CharField(max_length=256)
@@ -50,3 +52,4 @@ class Link(models.Model):
 
     def __str__(self):
         return self.name
+

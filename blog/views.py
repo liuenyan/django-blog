@@ -1,11 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator, InvalidPage
+from django.contrib import messages
 from .models import Post, Comment, Tag
 from .forms import EditPostForm, CommentForm, EditProfileForm
-from django.core.paginator import Paginator, InvalidPage
 from .tools import clean_html_tags
-from django.contrib.auth.forms import UserChangeForm
-from django.contrib import messages
 # Create your views here.
 
 #@login_required
@@ -39,10 +38,10 @@ def post(request, post_id):
         form = CommentForm()
         comments = Comment.objects.filter(post=post)
         context = {
-                'post': post,
-                'form': form,
-                'comments': comments, 
-                }
+            'post': post,
+            'form': form,
+            'comments': comments,
+        }
         return render(request, 'post.html', context)
 
 def post_with_disqus(request, post_id):
@@ -67,10 +66,10 @@ def edit_post(request, post_id):
             return redirect('post', post_id)
     else:
         data = {
-                'title': post.title,
-                'body': post.body,
-                'tags': ','.join([t.tag for t in post.tags.all()]),
-                }
+            'title': post.title,
+            'body': post.body,
+            'tags': ','.join([t.tag for t in post.tags.all()]),
+        }
         form = EditPostForm(data)
         return render(request, 'edit_post.html', {'form': form})
 
@@ -96,7 +95,7 @@ def new_post(request):
 
 @login_required
 def delete_post(request, post_id):
-    post = get_object_or_404(Post, id=post_id) 
+    post = get_object_or_404(Post, id=post_id)
     if request.user.id != post.author.id:
         return redirect('post', post_id)
     post.delete()
@@ -116,7 +115,7 @@ def tag(request, tagname):
     return render(request, 'index.html', context={'title': title, 'posts': posts})
 
 def archive(request, year, month):
-    post_list = Post.objects.filter(timestamp__year=year).filter(timestamp__month=month).order_by('-id')
+    post_list = Post.objects.filter(timestamp__year=year, timestamp__month=month).order_by('-id')
     paginator = Paginator(post_list, 10)
     page = request.GET.get('page')
     try:
@@ -146,9 +145,9 @@ def change_profile(request):
         return redirect('profile')
     else:
         data = {
-                'first_name': current_user.first_name,
-                'last_name': current_user.last_name,
-                'email': current_user.email
-                }
+            'first_name': current_user.first_name,
+            'last_name': current_user.last_name,
+            'email': current_user.email
+        }
         form = EditProfileForm(data)
         return render(request, 'change_profile.html', context={'form': form})

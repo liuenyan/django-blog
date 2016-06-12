@@ -1,8 +1,8 @@
 from django.conf.urls import url, include
-from . import views
 from django.contrib.auth import views as auth_views
-from .feeds import PostFeed
 from django.contrib.sitemaps.views import sitemap
+from . import views
+from .feeds import PostFeed
 from .sitemaps import StaticSitemap, PostSitemap
 
 sitemaps = {
@@ -12,7 +12,8 @@ sitemaps = {
 
 urlpatterns = [
     url(r'^$', views.index, name='index'),
-    url(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
+    url(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps},
+        name='django.contrib.sitemaps.views.sitemap'),
     url(r'^about/$', views.about, name='about'),
     url(r'^auth/', include('django.contrib.auth.urls')),
     #url(r'^post/(\d+)/$', views.post, name='post'),

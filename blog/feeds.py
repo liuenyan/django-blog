@@ -1,8 +1,6 @@
 from django.contrib.syndication.views import Feed
 from django.utils.feedgenerator import Atom1Feed
-from django.core.urlresolvers import reverse
 from .models import Post
-from . import views
 
 class PostFeed(Feed):
     feed_type = Atom1Feed
