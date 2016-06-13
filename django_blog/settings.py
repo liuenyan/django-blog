@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sitemaps',
+    'django.contrib.sites',
+    'django.contrib.flatpages',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -51,6 +53,7 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
 ]
 
 ROOT_URLCONF = 'django_blog.urls'
@@ -130,3 +133,6 @@ LOGIN_URL = '/auth/login/'
 LOGOUT_URL = '/auth/logout/'
 # INTERNAL_IPS for debug https://docs.djangoproject.com/en/1.9/ref/settings/#internal-ips
 INTERNAL_IPS = ['0.0.0.0', '127.0.0.1',]
+
+#site
+SITE_ID = 1

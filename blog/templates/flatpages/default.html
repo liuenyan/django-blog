@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% load blog_extras %}
+{% block title %}{{ flatpage.title }}{% endblock %}
+{% block  navbar %}{% show_navbar 'about' user %}{% endblock %}
+{% block content %}
+{{ flatpage.content }}
+{% endblock %}

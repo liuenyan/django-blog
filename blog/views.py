@@ -7,10 +7,6 @@ from .forms import EditPostForm, CommentForm, EditProfileForm
 from .tools import clean_html_tags
 # Create your views here.
 
-#@login_required
-def about(request):
-    return render(request, 'about.html')
-
 def index(request):
     post_list = Post.objects.all().order_by('-id')
     paginator = Paginator(post_list, 10)

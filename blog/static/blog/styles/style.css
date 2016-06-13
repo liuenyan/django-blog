@@ -128,3 +128,8 @@ ul.sidebar > li > ul {
     border-top-color:#dddddd;
 }
 
+img.align-center {
+    display: block;
+    margin: 20px auto;
+}
+
