@@ -12,7 +12,8 @@ class Tag(models.Model):
 
 class Post(models.Model):
     title = models.CharField(max_length=128)
-    body = models.TextField()
+    body_markdown = models.TextField()
+    body_html = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey('auth.User')
     tags = models.ManyToManyField(Tag)

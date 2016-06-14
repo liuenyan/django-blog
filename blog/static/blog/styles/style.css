@@ -133,3 +133,20 @@ img.align-center {
     margin: 20px auto;
 }
 
+.toc {
+    border-bottom-color: #dddddd;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+}
+
+.toc ul {
+    list-style-type: none;
+    padding-left: 25px;
+    font-size: 18px;
+}
+
+.toctitle {
+    text-align: center;
+    font-size: 18px;
+    display: block;
+}

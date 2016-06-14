@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from faker import Factory
 import bleach
 from bleach_whitelist import generally_xss_safe
+import markdown
 from .models import Post, Comment
 
 def generate_fake_posts(nums=50):
@@ -29,4 +30,23 @@ def generate_fake_comments(post, nums=10):
         comment.save()
 
 def clean_html_tags(data):
-    return bleach.linkify(bleach.clean(data, generally_xss_safe), skip_pre=True)
+    return bleach.linkify(
+        bleach.clean(data, generally_xss_safe),
+        skip_pre=True
+    )
+
+def convert_to_html(markdown_text):
+    md = markdown.Markdown(
+        extensions=[
+            'pymdownx.github',
+            'markdown.extensions.toc',
+        ],
+        extension_configs={
+            'markdown.extensions.toc':
+            {
+                'title': '目录',
+            },
+        },
+        output_format="html5"
+    )
+    return md.convert(markdown_text)

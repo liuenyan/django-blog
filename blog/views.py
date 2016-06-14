@@ -4,7 +4,7 @@ from django.core.paginator import Paginator, InvalidPage
 from django.contrib import messages
 from .models import Post, Comment, Tag
 from .forms import EditPostForm, CommentForm, EditProfileForm
-from .tools import clean_html_tags
+from .tools import clean_html_tags, convert_to_html
 # Create your views here.
 
 def index(request):
@@ -53,7 +53,8 @@ def edit_post(request, post_id):
         form = EditPostForm(request.POST)
         if form.is_valid():
             post.title = form.cleaned_data['title']
-            post.body = clean_html_tags(form.cleaned_data['body'])
+            post.body_markdown = form.cleaned_data['body']
+            post.body_html = convert_to_html(form.cleaned_data['body'])
             tags = [Tag.objects.get_or_create(tag=tag)[0] \
                     for tag in filter(None, form.cleaned_data['tags'].split(','))]
             post.tags.set(tags)
@@ -63,7 +64,7 @@ def edit_post(request, post_id):
     else:
         data = {
             'title': post.title,
-            'body': post.body,
+            'body': post.body_markdown,
             'tags': ','.join([t.tag for t in post.tags.all()]),
         }
         form = EditPostForm(data)
@@ -75,9 +76,12 @@ def new_post(request):
     if request.method == 'POST':
         form = EditPostForm(request.POST)
         if form.is_valid():
-            post = Post(title=form.cleaned_data['title'], \
-                    body=clean_html_tags(form.cleaned_data['body']), \
-                    author=request.user)
+            post = Post(
+                title=form.cleaned_data['title'],
+                body_markdown=form.cleaned_data['body'],
+                body_html=convert_to_html(form.cleaned_data['body']),
+                author=request.user
+            )
             post.save()
             tags = [Tag.objects.get_or_create(tag=tag)[0] \
                     for tag in filter(None, form.cleaned_data['tags'].split(','))]

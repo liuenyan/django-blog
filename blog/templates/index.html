@@ -5,7 +5,7 @@
 
 {% block styles %}
 {{ block.super }}
-<link href="//cdn.bootcss.com/highlight.js/9.3.0/styles/monokai.min.css" rel="stylesheet" />
+<link href="//cdn.bootcss.com/highlight.js/9.3.0/styles/github.min.css" rel="stylesheet" />
 {% endblock %}
 {% block content %}
 {{ block.super }}
@@ -28,7 +28,7 @@
                 </ul>
             </div>
             <div class="post-body">
-                {{ post.body |truncatechars_html:200 | safe }}
+                {{ post.body_html |truncatechars_html:200 | safe }}
             </div>
         </li>
         {% endfor %}
@@ -67,7 +67,7 @@ $(document).ready(function(){
         $(this).text(text);
     });
     /* code highlight */
-    hljs.configure({useBR: true});
+    hljs.configure({useBR: false});
     $('pre code').each(function(i, block){
         hljs.highlightBlock(block);
     });
