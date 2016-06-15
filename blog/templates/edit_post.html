@@ -1,7 +1,12 @@
 {% extends "base.html" %}
 {% load widget_tweaks %}
-
 {% block title %}编辑文章{% endblock %}
+
+{% block styles %}
+{{ block.super }}
+<link href="//cdn.bootcss.com/highlight.js/9.3.0/styles/github.min.css" rel="stylesheet" />
+{% endblock %}
+
 {% block content %}
 {{ block.super }}
 <div class="page-header">
@@ -17,13 +22,42 @@
         {{ form.tags.label_tag }}
         {{ form.tags | add_class:'form-control' }}
     </div>
-
-    <div class="form-group">
-        {{ form.body.label_tag }}
-        {{ form.body | add_class:'form-control' }}
+    <div>
+        <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active"><a href="#editor" aria-controls="editor" role="tab" data-toggle="tab">编辑</a></li>
+            <li role="presentation"><a href="#preview" aria-controls="preview" role="tab" data-toggle="tab">预览</a></li>
+        </ul>
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="editor">
+                <div class="form-group">
+                    {{ form.body.label_tag }}
+                    {{ form.body | add_class:'form-control' }}
+                </div>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="preview">
+            </div>
         </div>
     </div>
     <input type="submit" class="btn btn-default" value="提交" />
 </form>
 {% endblock %}
 
+{% block scripts %}
+{{ block.super }}
+<script src="//cdn.bootcss.com/highlight.js/9.3.0/highlight.min.js"></script>
+<script src="//cdn.bootcss.com/marked/0.3.5/marked.min.js"></script>
+<script>
+hljs.configure({useBR: false});
+marked.setOptions({
+    highlight: function (code) {
+        return hljs.highlightAuto(code).value;
+    }
+});
+$("#id_body").keyup(function(){
+    $("#preview")[0].innerHTML = marked($("#id_body")[0].value);
+});
+$(document).ready(function(){
+    $("#preview")[0].innerHTML = marked($("#id_body")[0].value);
+});
+</script>
+{% endblock %}
