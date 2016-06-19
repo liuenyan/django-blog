@@ -23,22 +23,25 @@ def post(request, post_id):
     if request.method == 'POST':
         form = CommentForm(request.POST)
         if form.is_valid():
-            comment = Comment(name=form.cleaned_data['name'], \
-                    url=form.cleaned_data['url'], \
-                    email=form.cleaned_data['email'], \
-                    comment=clean_html_tags(form.cleaned_data['comment']), \
-                    post=post)
+            comment = Comment(
+                name=form.cleaned_data['name'],
+                url=form.cleaned_data['url'],
+                email=form.cleaned_data['email'],
+                comment=clean_html_tags(form.cleaned_data['comment']),
+                post=post
+            )
             comment.save()
             return redirect('post', post_id)
-    else:
-        form = CommentForm()
-        comments = Comment.objects.filter(post=post)
-        context = {
-            'post': post,
-            'form': form,
-            'comments': comments,
-        }
-        return render(request, 'post.html', context)
+        else:
+            messages.add_message(request, messages.ERROR, form.errors)
+    form = CommentForm()
+    comments = Comment.objects.filter(post=post)
+    context = {
+        'post': post,
+        'form': form,
+        'comments': comments,
+    }
+    return render(request, 'post.html', context)
 
 def post_with_disqus(request, post_id):
     post = get_object_or_404(Post, id=post_id)
@@ -61,14 +64,15 @@ def edit_post(request, post_id):
             post.save()
             messages.add_message(request, messages.SUCCESS, '文章已更新')
             return redirect('post', post_id)
-    else:
-        data = {
-            'title': post.title,
-            'body': post.body_markdown,
-            'tags': ','.join([t.tag for t in post.tags.all()]),
-        }
-        form = EditPostForm(data)
-        return render(request, 'edit_post.html', {'form': form})
+        else:
+            messages.add_message(request, messages.ERROR, form.errors)
+    data = {
+        'title': post.title,
+        'body': post.body_markdown,
+        'tags': ','.join([t.tag for t in post.tags.all()]),
+    }
+    form = EditPostForm(data)
+    return render(request, 'edit_post.html', {'form': form})
 
 
 @login_required
@@ -87,10 +91,12 @@ def new_post(request):
                     for tag in filter(None, form.cleaned_data['tags'].split(','))]
             post.tags.set(tags)
             post.save()
+            messages.add_message(request, messages.SUCCESS, '文章已发布')
             return redirect('index')
-    else:
-        form = EditPostForm()
-        return render(request, 'edit_post.html', {'form': form})
+        else:
+            messages.add_message(request, messages.ERROR, form.errors)
+    form = EditPostForm()
+    return render(request, 'edit_post.html', {'form': form})
 
 
 @login_required
@@ -140,14 +146,13 @@ def change_profile(request):
             current_user.email = form.cleaned_data['email']
             current_user.save()
             messages.add_message(request, messages.SUCCESS, '个人资料已更新')
+            return redirect('profile')
         else:
-            messages.add_message(request, messages.ERROR, '数据格式错误，个人资料未更新')
-        return redirect('profile')
-    else:
-        data = {
-            'first_name': current_user.first_name,
-            'last_name': current_user.last_name,
-            'email': current_user.email
-        }
-        form = EditProfileForm(data)
-        return render(request, 'change_profile.html', context={'form': form})
+            messages.add_message(request, messages.ERROR, form.errors)
+    data = {
+        'first_name': current_user.first_name,
+        'last_name': current_user.last_name,
+        'email': current_user.email
+    }
+    form = EditProfileForm(data)
+    return render(request, 'change_profile.html', context={'form': form})
