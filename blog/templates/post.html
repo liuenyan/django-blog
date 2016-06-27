@@ -10,7 +10,7 @@
 
 {% block content %}
 {{ block.super }}
-<div class="col-md-8">
+<article class="col-md-8">
     <div class="post-title">
         <h1>{{ post.title }}</h1>
     </div>
@@ -30,8 +30,8 @@
     </div>
     <div class="post-controls">
         {% if post.author.id == user.id %}
-        <a href="{% url 'edit_post' post.id %}" class="btn btn-primary"><span class="glyphicon glyphicon-edit"></span> 编辑</a>
-        <a href="{% url 'delete_post' post.id %}" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> 删除</a>
+        <a href="{% url 'edit_post' post.id %}" class="btn btn-primary"><span class="fa fa-pencil"></span> 编辑</a>
+        <a href="{% url 'delete_post' post.id %}" class="btn btn-danger"><span class="fa fa-trash"></span> 删除</a>
         {% endif %}
     </div>
     <div class="post-comments">
@@ -77,7 +77,7 @@
             <input type="submit" class="btn btn-primary" value="提交">
         </form>
     </div>
-</div>
+</article>
 <div class="col-md-4">
     {% show_sidebar %}
 </div>
