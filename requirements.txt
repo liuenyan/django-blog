@@ -1,9 +1,9 @@
-bleach==1.4.2
+bleach==1.4.3
 bleach-whitelist==0.0.7
-Django==1.9.5
+Django==1.9.7
 django-debug-toolbar==1.4
 django-widget-tweaks==1.4.1
-fake-factory==0.5.7
+fake-factory==0.5.8
 html5lib==0.9999999
 Markdown==2.6.6
 Pygments==2.1.3
