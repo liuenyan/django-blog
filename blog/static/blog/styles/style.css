@@ -1,5 +1,6 @@
 html, body {
     height: 100%;
+    font-family: "Helvetica Neue", "Luxi Sans", "Droid Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", "Microsoft Yahei", "WenQuanYi Micro Hei", "WenQuanYi Zen Hei", sans-serif;
 }
 
 body > div.container {
