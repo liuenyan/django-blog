@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, InvalidPage
 from django.contrib import messages
+from django.conf import settings
 from .models import Post, Comment, Tag
 from .forms import EditPostForm, CommentForm, EditProfileForm
 from .tools import clean_html_tags, convert_to_html
@@ -20,32 +21,31 @@ def index(request):
 
 def post(request, post_id):
     post = get_object_or_404(Post, id=post_id)
-    if request.method == 'POST':
-        form = CommentForm(request.POST)
-        if form.is_valid():
-            comment = Comment(
-                name=form.cleaned_data['name'],
-                url=form.cleaned_data['url'],
-                email=form.cleaned_data['email'],
-                comment=clean_html_tags(form.cleaned_data['comment']),
-                post=post
-            )
-            comment.save()
-            return redirect('post', post_id)
-        else:
-            messages.add_message(request, messages.ERROR, form.errors)
-    form = CommentForm()
-    comments = Comment.objects.filter(post=post)
     context = {
+        'comments_provider': settings.DEFAULT_COMMENTS_PROVIDER,
         'post': post,
-        'form': form,
-        'comments': comments,
     }
+    if settings.DEFAULT_COMMENTS_PROVIDER == 'default':
+        if request.method == 'POST':
+            form = CommentForm(request.POST)
+            if form.is_valid():
+                comment = Comment(
+                    name=form.cleaned_data['name'],
+                    url=form.cleaned_data['url'],
+                    email=form.cleaned_data['email'],
+                    comment=clean_html_tags(form.cleaned_data['comment']),
+                    post=post
+                )
+                comment.save()
+                return redirect('post', post_id)
+            else:
+                messages.add_message(request, messages.ERROR, form.errors)
+        form = CommentForm()
+        comments = Comment.objects.filter(post=post)
+        context['form'] = form
+        context['comments'] = comments
     return render(request, 'post.html', context)
 
-def post_with_disqus(request, post_id):
-    post = get_object_or_404(Post, id=post_id)
-    return render(request, 'post_with_disqus.html', {'post': post,})
 
 @login_required
 def edit_post(request, post_id):

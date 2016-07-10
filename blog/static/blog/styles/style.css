@@ -57,7 +57,7 @@ li.post {
 }
 
 .post-controls > a {
-    float: right;
+    /*float: right;*/
     margin: 2px;
 }
 
