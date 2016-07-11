@@ -19,7 +19,7 @@ class Category(models.Model):
 
 class Post(models.Model):
     title = models.CharField(max_length=128)
-    #slug = models.SlugField(unique=True)
+    slug = models.SlugField(unique=True)
     creation_time = models.DateTimeField(auto_now_add=True)
     modification_time = models.DateTimeField(auto_now=True)
     body_markdown = models.TextField()
