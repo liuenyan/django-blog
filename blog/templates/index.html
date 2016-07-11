@@ -19,7 +19,7 @@
             <div class="post-meta">
                 <ul>
                     <li><i class="fa fa-user"></i> {{ post.author.username }}</li>
-                    <li><i class="fa fa-clock-o"></i> <span class="post-date">{{ post.timestamp | date:"c" }}</span></li>
+                    <li><i class="fa fa-clock-o"></i> <span class="post-date">{{ post.creation_time | date:"c" }}</span></li>
                     <li><i class="fa fa-tags"></i>
                         {% for tag in post.tags.all %}
                         <span class="label label-primary"><a href="{% url 'tag' tag %}">{{ tag }}</a></span>&nbsp;

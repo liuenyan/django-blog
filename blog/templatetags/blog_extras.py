@@ -13,8 +13,8 @@ def show_navbar(active, user):
 def show_sidebar():
     tags = Tag.objects.annotate(Count('post')).filter(post__count__gt=0).order_by('tag')
     archives = Post.objects.extra(select={
-        'year': 'strftime("%Y", timestamp)',
-        'month': 'strftime("%m", timestamp)'
+        'year': 'strftime("%Y", creation_time)',
+        'month': 'strftime("%m", creation_time)'
     }).values('year', 'month').annotate(Count('id')).order_by('-year', '-month')
     links = Link.objects.all()
     return {'tags': tags, 'archives': archives, 'links': links}

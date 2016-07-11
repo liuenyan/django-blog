@@ -121,7 +121,7 @@ def tag(request, tagname):
     return render(request, 'index.html', context={'title': title, 'posts': posts})
 
 def archive(request, year, month):
-    post_list = Post.objects.filter(timestamp__year=year, timestamp__month=month).order_by('-id')
+    post_list = Post.objects.filter(creation_time__year=year, creation_time__month=month).order_by('-id')
     paginator = Paginator(post_list, 10)
     page = request.GET.get('page')
     try:

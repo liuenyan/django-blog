@@ -10,12 +10,22 @@ class Tag(models.Model):
         return self.tag
 
 
+class Category(models.Model):
+    category = models.CharField(max_length=256, unique=True)
+
+    def __str__(self):
+        return self.category
+
+
 class Post(models.Model):
     title = models.CharField(max_length=128)
+    #slug = models.SlugField(unique=True)
+    creation_time = models.DateTimeField(auto_now_add=True)
+    modification_time = models.DateTimeField(auto_now=True)
     body_markdown = models.TextField()
     body_html = models.TextField()
-    timestamp = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey('auth.User')
+    categories = models.ManyToManyField(Category)
     tags = models.ManyToManyField(Tag)
 
     def save(self, force_insert=False, force_update=False, using=None,
