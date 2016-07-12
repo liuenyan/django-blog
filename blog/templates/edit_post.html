@@ -8,45 +8,58 @@
 
 {% block content %}
 {{ block.super }}
-<div class="page-header">
-    <h1>编辑文章<h1>
+<div class="col-md-10 col-md-offset-1">
+    <div class="page-header">
+        <h1>编辑文章</h1>
+    </div>
+    <form method='POST'>
+        {% csrf_token %}
+        <div class="form-group">
+            {{ form.title.label_tag }} <i class="fa fa-info-circle" title="{{ form.title.help_text }}" data-toggle="tooltip"></i>
+            {{ form.title | add_class:'form-control' }}
+        </div>
+        <div class="form-group">
+            {{ form.slug.label_tag }} <i class="fa fa-info-circle" title="{{ form.slug.help_text }}" data-toggle="tooltip"></i>
+            {{ form.slug | add_class:'form-control' }}
+        </div>
+        <div class="form-group">
+            {{ form.tags.label_tag }} <i class="fa fa-info-circle" title="{{ form.tags.help_text }}" data-toggle="tooltip"></i>
+            {{ form.tags | add_class:'form-control' }}
+        </div>
+        <div class="form-group">
+            {{ form.categories.label_tag }} <i class="fa fa-info-circle" title="{{ form.categories.help_text }}" data-toggle="tooltip"></i>
+            {{ form.categories | add_class:'form-control' }}
+        </div>
+        <div class="form-group">
+            {{ form.body_markdown.label_tag }} <i class="fa fa-info-circle" title="{{ form.body_markdown.help_text }}" data-toggle="tooltip"></i>
+            <div id="epiceditor">{{ form.body_markdown | add_class:'form-control' }}</div>
+        </div>
+        <input type="submit" class="btn btn-success" value="发布" />
+    </form>
 </div>
-<form method='POST'>
-    {% csrf_token %}
-    <div class="form-group">
-        {{ form.title.label_tag }}
-        {{ form.title | add_class:'form-control' }}
-    </div>
-    <div class="form-group">
-        {{ form.tags.label_tag }}
-        {{ form.tags | add_class:'form-control' }}
-    </div>
-    <div class="form-group">
-        {{ form.body.label_tag }}
-        <div id="epiceditor">{{ form.body | add_class:'form-control' }}</div>
-    </div>
-    <input type="submit" class="btn btn-default" value="提交" />
-</form>
 {% endblock %}
 
 {% block scripts %}
 {{ block.super }}
 <script src="//cdn.bootcss.com/epiceditor/0.2.2/js/epiceditor.min.js"></script>
 <script>
-var editor = new EpicEditor({
-    basePath: "//cdn.bootcss.com/epiceditor/0.2.2",
-    clientSideStorage: false,
-    theme: {
-        base: '/themes/base/epiceditor.css',
-        preview: '/themes/preview/github.css',
-        editor: '/themes/editor/epic-dark.css'
-    },
-    autogrow: {
-        minHeight: 250
-    },
-    button: {
-        bar: true
-    }
-}).load();
+$(function () {
+    $('[data-toggle="tooltip"]').tooltip();
+    var editor = new EpicEditor({
+        basePath: "//cdn.bootcss.com/epiceditor/0.2.2",
+        clientSideStorage: false,
+        theme: {
+            base: '/themes/base/epiceditor.css',
+            preview: '/themes/preview/github.css',
+            editor: '/themes/editor/epic-dark.css'
+        },
+        autogrow: {
+            minHeight: 250
+        },
+        button: {
+            bar: true
+        }
+    }).load();
+});
 </script>
 {% endblock %}

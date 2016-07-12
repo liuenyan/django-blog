@@ -56,10 +56,12 @@ def edit_post(request, post_id):
         form = EditPostForm(request.POST)
         if form.is_valid():
             post.title = form.cleaned_data['title']
-            post.body_markdown = form.cleaned_data['body']
-            post.body_html = convert_to_html(form.cleaned_data['body'])
+            post.slug = form.cleaned_data['slug']
+            post.body_markdown = form.cleaned_data['body_markdown']
+            post.body_html = convert_to_html(form.cleaned_data['body_markdown'])
             tags = [Tag.objects.get_or_create(tag=tag)[0] \
                     for tag in filter(None, form.cleaned_data['tags'].split(','))]
+            post.categories = form.cleaned_data['categories']
             post.tags.set(tags)
             post.save()
             messages.add_message(request, messages.SUCCESS, '文章已更新')
@@ -68,8 +70,10 @@ def edit_post(request, post_id):
             messages.add_message(request, messages.ERROR, form.errors)
     data = {
         'title': post.title,
-        'body': post.body_markdown,
+        'slug': post.slug,
+        'body_markdown': post.body_markdown,
         'tags': ','.join([t.tag for t in post.tags.all()]),
+        'categories': post.categories.all(),
     }
     form = EditPostForm(data)
     return render(request, 'edit_post.html', {'form': form})
@@ -82,14 +86,16 @@ def new_post(request):
         if form.is_valid():
             post = Post(
                 title=form.cleaned_data['title'],
-                body_markdown=form.cleaned_data['body'],
-                body_html=convert_to_html(form.cleaned_data['body']),
+                slug=form.cleaned_data['slug'],
+                body_markdown=form.cleaned_data['body_markdown'],
+                body_html=convert_to_html(form.cleaned_data['body_markdown']),
                 author=request.user
             )
             post.save()
             tags = [Tag.objects.get_or_create(tag=tag)[0] \
                     for tag in filter(None, form.cleaned_data['tags'].split(','))]
             post.tags.set(tags)
+            post.categories=form.cleaned_data['categories']
             post.save()
             messages.add_message(request, messages.SUCCESS, '文章已发布')
             return redirect('index')
