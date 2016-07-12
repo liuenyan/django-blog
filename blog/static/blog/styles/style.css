@@ -117,7 +117,7 @@ ul.sidebar > li > h4 {
 
 ul.sidebar > li > ul {
     list-style-type: none;
-    padding: 10px;
+    padding: 10px 36px;
 }
 
 .page-footer {
