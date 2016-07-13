@@ -1,6 +1,6 @@
 <ul class="sidebar">
     <li>
-        <h4><i class="fa fa-tags fa-lg"></i> 分类</h4>
+        <h4><i class="fa fa-book fa-lg"></i> 分类</h4>
         <ul>
             {% for category in categories %}
             <li><a href="{% url 'category' category %}">{{ category.category }} <span class="badge">{{ category.post_set.count }}</span></a></li>
