@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, InvalidPage
 from django.contrib import messages
 from django.conf import settings
+from django.core.exceptions import ValidationError
 from .models import Post, Comment, Tag, Category
 from .forms import EditPostForm, CommentForm, EditProfileForm
 from .tools import clean_html_tags, convert_to_html
@@ -63,9 +64,14 @@ def edit_post(request, slug):
                     for tag in filter(None, form.cleaned_data['tags'].split(','))]
             post.categories = form.cleaned_data['categories']
             post.tags.set(tags)
+            try:
+                post.full_clean()
+            except ValidationError as e:
+                messages.add_message(request, messages.ERROR, e.message_dict)
+                return render(request, 'edit_post.html', {'form': form})
             post.save()
             messages.add_message(request, messages.SUCCESS, '文章已更新')
-            return redirect('post', slug)
+            return redirect('post', post.slug)
         else:
             messages.add_message(request, messages.ERROR, form.errors)
     data = {
@@ -91,6 +97,11 @@ def new_post(request):
                 body_html=convert_to_html(form.cleaned_data['body_markdown']),
                 author=request.user
             )
+            try:
+                post.full_clean()
+            except ValidationError as e:
+                messages.add_message(request, messages.ERROR, e.message_dict)
+                return render(request, 'edit_post.html', {'form': form})
             post.save()
             tags = [Tag.objects.get_or_create(tag=tag)[0] \
                     for tag in filter(None, form.cleaned_data['tags'].split(','))]
