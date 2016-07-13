@@ -14,7 +14,7 @@
         {% for post in posts %}
         <li class="post">
             <div class="post-title">
-                <h1><a href="{% url 'post' post.id %}">{{ post.title }}</a></h1>
+                <h1><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h1>
             </div>
             <div class="post-meta">
                 <ul>

@@ -20,4 +20,4 @@ class PostSitemap(Sitemap):
         return Post.objects.all()
 
     def lastmod(self, obj):
-        return obj.timestamp
+        return obj.modification_time

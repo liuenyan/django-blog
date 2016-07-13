@@ -19,8 +19,8 @@ def index(request):
     return render(request, "index.html", context={'posts': posts})
 
 
-def post(request, post_id):
-    post = get_object_or_404(Post, id=post_id)
+def post(request, slug):
+    post = get_object_or_404(Post, slug=slug)
     context = {
         'comments_provider': settings.DEFAULT_COMMENTS_PROVIDER,
         'post': post,
@@ -37,7 +37,7 @@ def post(request, post_id):
                     post=post
                 )
                 comment.save()
-                return redirect('post', post_id)
+                return redirect('post', slug)
             else:
                 messages.add_message(request, messages.ERROR, form.errors)
         form = CommentForm()
@@ -48,10 +48,10 @@ def post(request, post_id):
 
 
 @login_required
-def edit_post(request, post_id):
-    post = get_object_or_404(Post, id=post_id)
+def edit_post(request, slug):
+    post = get_object_or_404(Post, slug=slug)
     if request.user.id != post.author.id:
-        return redirect('post', post_id)
+        return redirect('post', slug)
     if request.method == 'POST':
         form = EditPostForm(request.POST)
         if form.is_valid():
@@ -65,7 +65,7 @@ def edit_post(request, post_id):
             post.tags.set(tags)
             post.save()
             messages.add_message(request, messages.SUCCESS, '文章已更新')
-            return redirect('post', post_id)
+            return redirect('post', slug)
         else:
             messages.add_message(request, messages.ERROR, form.errors)
     data = {
@@ -98,7 +98,7 @@ def new_post(request):
             post.categories=form.cleaned_data['categories']
             post.save()
             messages.add_message(request, messages.SUCCESS, '文章已发布')
-            return redirect('index')
+            return redirect('post', post.slug)
         else:
             messages.add_message(request, messages.ERROR, form.errors)
     form = EditPostForm()
@@ -106,10 +106,10 @@ def new_post(request):
 
 
 @login_required
-def delete_post(request, post_id):
-    post = get_object_or_404(Post, id=post_id)
+def delete_post(request, slug):
+    post = get_object_or_404(Post, id=slug)
     if request.user.id != post.author.id:
-        return redirect('post', post_id)
+        return redirect('post', slug)
     post.delete()
     return redirect('index')
 

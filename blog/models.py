@@ -38,7 +38,7 @@ class Post(models.Model):
 
     def get_absolute_url(self):
         from django.core.urlresolvers import reverse
-        return reverse('post', args=[str(self.id)])
+        return reverse('post', args=[self.slug])
 
     def __str__(self):
         return self.title
