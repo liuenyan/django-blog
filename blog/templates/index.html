@@ -20,6 +20,11 @@
                 <ul>
                     <li><i class="fa fa-user"></i> {{ post.author.username }}</li>
                     <li><i class="fa fa-clock-o"></i> <span class="post-date">{{ post.creation_time | date:"c" }}</span></li>
+                    <li><i class="fa fa-book"></i>
+                        {% for category in post.categories.all %}
+                        <span class="label label-primary"><a href="{% url 'category' category %}">{{ category }}</a></span>&nbsp;
+                        {% endfor %}
+                    </li>
                     <li><i class="fa fa-tags"></i>
                         {% for tag in post.tags.all %}
                         <span class="label label-primary"><a href="{% url 'tag' tag %}">{{ tag }}</a></span>&nbsp;

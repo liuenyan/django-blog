@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, InvalidPage
 from django.contrib import messages
 from django.conf import settings
-from .models import Post, Comment, Tag
+from .models import Post, Comment, Tag, Category
 from .forms import EditPostForm, CommentForm, EditProfileForm
 from .tools import clean_html_tags, convert_to_html
 # Create your views here.
@@ -113,10 +113,22 @@ def delete_post(request, post_id):
     post.delete()
     return redirect('index')
 
+def category(request, category_name):
+    category_object = get_object_or_404(Category, category=category_name)
+    post_list = category_object.post_set.order_by('-id')
+    paginator = Paginator(post_list, 10)
+    page = request.GET.get('page')
+    try:
+        posts = paginator.page(page)
+    except InvalidPage:
+        posts = paginator.page(1)
+    title = '分类为{0}的文章'.format(category_name)
+    return render(request, 'index.html', context={'title': title, 'posts': posts})
+
 
 def tag(request, tagname):
-    tag = get_object_or_404(Tag, tag=tagname)
-    post_list = tag.post_set.order_by('-id')
+    tag_object = get_object_or_404(Tag, tag=tagname)
+    post_list = tag_object.post_set.order_by('-id')
     paginator = Paginator(post_list, 10)
     page = request.GET.get('page')
     try:
@@ -125,6 +137,7 @@ def tag(request, tagname):
         posts = paginator.page(1)
     title = '标签为{0}的文章'.format(tagname)
     return render(request, 'index.html', context={'title': title, 'posts': posts})
+
 
 def archive(request, year, month):
     post_list = Post.objects.filter(creation_time__year=year, creation_time__month=month).order_by('-id')

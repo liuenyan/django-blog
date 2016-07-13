@@ -1,5 +1,13 @@
 <ul class="sidebar">
     <li>
+        <h4><i class="fa fa-tags fa-lg"></i> 分类</h4>
+        <ul>
+            {% for category in categories %}
+            <li><a href="{% url 'category' category %}">{{ category.category }} <span class="badge">{{ category.post_set.count }}</span></a></li>
+            {% endfor %}
+        </ul>
+    </li>
+    <li>
         <h4><i class="fa fa-tags fa-lg"></i> 标签</h4>
         <ul>
             {% for tag in tags %}
