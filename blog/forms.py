@@ -1,42 +1,42 @@
 from django import forms
-from .models import Category
+from django.forms.widgets import CheckboxSelectMultiple
+from .models import Category, Post
 
-class EditPostForm(forms.Form):
-    title = forms.CharField(
-        label='标题',
-        max_length=128,
-        error_messages={
-            'required': '标题不能为空',
-        },
-        help_text='您的文章标题'
-    )
-    slug = forms.SlugField(
-        label='缩略名',
-        error_messages={
-            'required': 'slug不能为空',
-            'invalid': 'slug无效',
-        },
-        help_text='缩略名(slug)是文章标题的URL友好型版本'
-    )
-    tags = forms.CharField(
-        label='标签',
-        max_length=128,
-        required=False,
-        help_text='使用标签将更具体的关键字与您的文章关联起来'
-    )
-    categories = forms.ModelMultipleChoiceField(
-        label='分类',
-        queryset=Category.objects.all(),
-        help_text='使用类别按主题对您的文章进行分组'
-    )
-    body_markdown = forms.CharField(
-        label='内容',
-        widget=forms.Textarea,
-        error_messages={
-            'required': '文章内容不能为空',
-        },
-        help_text='使用Markdown语法编辑文章'
-    )
+
+class PostForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields = ['title', 'slug', 'categories', 'tags', 'body_markdown']
+        widgets = {
+            'categories': CheckboxSelectMultiple,
+            'tags': CheckboxSelectMultiple,
+        }
+        labels = {
+            'title': '标题',
+            'slug': '缩略名',
+            'categories': '分类',
+            'tags': '标签',
+            'body_markdown': '内容',
+        }
+        help_texts = {
+            'title': '您的文章标题',
+            'slug': '缩略名(slug)是文章标题的URL友好型版本',
+            'tags': '使用标签将更具体的关键字与您的文章关联起来',
+            'categories': '使用类别按主题对您的文章进行分组',
+            'body_markdown': '使用Markdown语法编辑文章',
+        }
+        error_messages = {
+            'title': {
+                'required': '标题不能为空',
+            },
+            'slug': {
+                'required': 'slug不能为空',
+                'invalid': 'slug无效',
+            },
+            'body_markdown': {
+                'required': '文章内容不能为空',
+            },
+        }
 
 
 class CommentForm(forms.Form):
@@ -64,6 +64,7 @@ class CommentForm(forms.Form):
             'required': '评论内容不能为空',
         }
     )
+
 
 class EditProfileForm(forms.Form):
     first_name = forms.CharField(
