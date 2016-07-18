@@ -27,4 +27,6 @@ urlpatterns = [
     url(r'^archive/(\d{4})/(\d{2})/$', views.archive, name='archive'),
     url(r'^profile/$', views.profile, name='profile'),
     url(r'^change-profile/$', views.change_profile, name='change_profile'),
+    url(r'^new_category/$', views.new_category, name='new_category'),
+    url(r'^new_tag/$', views.new_tag, name='new_tag'),
 ]

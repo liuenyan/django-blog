@@ -3,9 +3,11 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, InvalidPage
 from django.contrib import messages
 from django.conf import settings
-from django.core.exceptions import ValidationError
+from django.http import HttpResponse
+from django.views.decorators.http import require_POST
+import json
 from .models import Post, Comment, Tag, Category
-from .forms import PostForm, CommentForm, EditProfileForm
+from .forms import PostForm, CommentForm, EditProfileForm, CategoryForm, TagForm
 from .tools import clean_html_tags, convert_to_html
 # Create your views here.
 
@@ -54,36 +56,54 @@ def edit_post(request, slug):
     if request.user.id != post.author.id:
         return redirect('post', slug)
     if request.method == 'POST':
-        form = PostForm(request.POST, instance=post)
-        if form.is_valid():
-            post.body_html = convert_to_html(form.cleaned_data['body_markdown'])
-            form.save()
+        post_form = PostForm(request.POST, instance=post)
+        if post_form.is_valid():
+            post.body_html = convert_to_html(post_form.cleaned_data['body_markdown'])
+            post_form.save()
             messages.add_message(request, messages.SUCCESS, '文章已更新')
             return redirect('post', post.slug)
         else:
-            messages.add_message(request, messages.ERROR, form.errors)
-            return render(request, 'edit_post.html', {'form': form })
-    form = PostForm(instance=post)
-    return render(request, 'edit_post.html', { 'form': form })
+            messages.add_message(request, messages.ERROR, post_form.errors)
+            context = {
+                'post_form': post_form,
+                'category_form': CategoryForm(),
+                'tag_form': TagForm(),
+            }
+            return render(request, 'edit_post.html', context)
+    context = {
+        'post_form': PostForm(instance=post),
+        'category_form': CategoryForm(),
+        'tag_form': TagForm(),
+    }
+    return render(request, 'edit_post.html', context)
 
 
 @login_required
 def new_post(request):
     if request.method == 'POST':
-        form = PostForm(request.POST)
-        if form.is_valid():
-            post = form.save(commit=False)
-            post.body_html = convert_to_html(form.cleaned_data['body_markdown'])
+        post_form = PostForm(request.POST)
+        if post_form.is_valid():
+            post = post_form.save(commit=False)
+            post.body_html = convert_to_html(post_form.cleaned_data['body_markdown'])
             post.author = request.user
             post.save()
-            form.save_m2m()
+            post_form.save_m2m()
             messages.add_message(request, messages.SUCCESS, '文章已发布')
             return redirect('post', post.slug)
         else:
-            messages.add_message(request, messages.ERROR, form.errors)
-            return render(request, 'edit_post.html', { 'form': form })
-    form = PostForm()
-    return render(request, 'edit_post.html', {'form': form })
+            messages.add_message(request, messages.ERROR, post_form.errors)
+            context = {
+                'post_form': post_form,
+                'category_form': CategoryForm(),
+                'tag_form': TagForm(),
+            }
+            return render(request, 'edit_post.html', context)
+    context = {
+        'post_form': PostForm(),
+        'category_form': CategoryForm(),
+        'tag_form': TagForm(),
+    }
+    return render(request, 'edit_post.html', context)
 
 
 @login_required
@@ -106,6 +126,50 @@ def category(request, category_name):
         posts = paginator.page(1)
     title = '分类为{0}的文章'.format(category_name)
     return render(request, 'index.html', context={'title': title, 'posts': posts})
+
+
+@login_required
+@require_POST
+def new_category(request):
+    form = CategoryForm(request.POST)
+    if form.is_valid():
+        category = form.save()
+        result = {
+            'status': 'success',
+            'category': {
+                'id': category.id,
+                'category': category.category,
+            },
+        }
+        return HttpResponse(json.dumps(result), content_type="text/json")
+    else:
+        result = {
+            'status': 'fail',
+            'errors': form.category.errors,
+        }
+        return HttpResponse(json.dumps(result), content="text/json")
+
+
+@login_required
+@require_POST
+def new_tag(request):
+    form = TagForm(request.POST)
+    if form.is_valid():
+        tag = form.save()
+        result = {
+            'status': 'success',
+            'tag': {
+                'id': tag.id,
+                'tag': tag.tag,
+            }
+        }
+        return HttpResponse(json.dumps(result), content_type="text/json")
+    else:
+        result = {
+            'status': 'fail',
+            'errors': form.errors,
+        }
+        return HttpResponse(json.dumps(result), content="text/json")
 
 
 def tag(request, tagname):
@@ -132,9 +196,11 @@ def archive(request, year, month):
     title = '{0}年{1}月的归档'.format(year, month)
     return render(request, 'index.html', context={'title': title, 'posts': posts})
 
+
 @login_required
 def profile(request):
     return render(request, 'profile.html')
+
 
 @login_required
 def change_profile(request):

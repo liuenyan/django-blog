@@ -1,6 +1,6 @@
 from django import forms
 from django.forms.widgets import CheckboxSelectMultiple
-from .models import Category, Post
+from .models import Post, Category, Tag
 
 
 class PostForm(forms.ModelForm):
@@ -36,6 +36,23 @@ class PostForm(forms.ModelForm):
             'body_markdown': {
                 'required': '文章内容不能为空',
             },
+        }
+
+class CategoryForm(forms.ModelForm):
+    class Meta:
+        model = Category
+        fields = ['category',]
+        labels = {
+            'category': '分类',
+        }
+
+
+class TagForm(forms.ModelForm):
+    class Meta:
+        model = Tag
+        fields = ['tag',]
+        labels = {
+            'tag': '标签',
         }
 
 

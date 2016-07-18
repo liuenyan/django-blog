@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load widget_tweaks %}
+{% load staticfiles widget_tweaks %}
 {% block title %}编辑文章{% endblock %}
 
 {% block styles %}
@@ -15,51 +15,83 @@
     <form method='POST'>
         {% csrf_token %}
         <div class="form-group">
-            {{ form.title.label_tag }} <i class="fa fa-info-circle" title="{{ form.title.help_text }}" data-toggle="tooltip"></i>
-            {{ form.title | add_class:'form-control' }}
+            {{ post_form.title.label_tag }} <i class="fa fa-info-circle" title="{{ post_form.title.help_text }}" data-toggle="tooltip"></i>
+            {{ post_form.title | add_class:'form-control' }}
         </div>
         <div class="form-group">
-            {{ form.slug.label_tag }} <i class="fa fa-info-circle" title="{{ form.slug.help_text }}" data-toggle="tooltip"></i>
-            {{ form.slug | add_class:'form-control' }}
+            {{ post_form.slug.label_tag }} <i class="fa fa-info-circle" title="{{ post_form.slug.help_text }}" data-toggle="tooltip"></i>
+            {{ post_form.slug | add_class:'form-control' }}
         </div>
         <div class="form-group">
-            {{ form.tags.label_tag }} <i class="fa fa-info-circle" title="{{ form.tags.help_text }}" data-toggle="tooltip"></i>
-            {{ form.tags }}
+            {{ post_form.categories.label_tag }} <i class="fa fa-info-circle" title="{{ post_form.categories.help_text }}" data-toggle="tooltip"></i>
+            {{ post_form.categories }}
+            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#category-modal">新建分类</button>
         </div>
         <div class="form-group">
-            {{ form.categories.label_tag }} <i class="fa fa-info-circle" title="{{ form.categories.help_text }}" data-toggle="tooltip"></i>
-            {{ form.categories }}
+            {{ post_form.tags.label_tag }} <i class="fa fa-info-circle" title="{{ post_form.tags.help_text }}" data-toggle="tooltip"></i>
+            {{ post_form.tags }}
+            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#tag-modal">新建标签</button>
         </div>
         <div class="form-group">
-            {{ form.body_markdown.label_tag }} <i class="fa fa-info-circle" title="{{ form.body_markdown.help_text }}" data-toggle="tooltip"></i>
-            <div id="epiceditor">{{ form.body_markdown | add_class:'form-control' }}</div>
+            {{ post_form.body_markdown.label_tag }} <i class="fa fa-info-circle" title="{{ post_form.body_markdown.help_text }}" data-toggle="tooltip"></i>
+            <div id="epiceditor">{{ post_form.body_markdown | add_class:'form-control' }}</div>
         </div>
         <input type="submit" class="btn btn-success" value="发布" />
     </form>
 </div>
 {% endblock %}
 
+{% block modals %}
+<div class="modal fade" id="category-modal" tabindex="-1", role="dialog" aria-labelledby="category-modal-label">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="category-modal-label">添加分类</h4>
+                <div class="modal-body">
+                    <form>
+                        {% csrf_token %}
+                        <div class="form-group">
+                            {{ category_form.category.label_tag }}
+                            {{ category_form.category | add_class:'form-control' }}
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success">添加</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal" aria-label="Close">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="tag-modal" tabindex="-1", role="dialog" aria-labelledby="tag-modal-label">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="tag-modal-label">添加标签</h4>
+                <div class="modal-body">
+                    <form>
+                      {% csrf_token %}
+                        <div class="form-group">
+                            {{ tag_form.tag.label_tag }}
+                            {{ tag_form.tag | add_class:'form-control' }}
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success">添加</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal" aria-label="Close">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
 {% block scripts %}
 {{ block.super }}
 <script src="//cdn.bootcss.com/epiceditor/0.2.2/js/epiceditor.min.js"></script>
-<script>
-$(function () {
-    $('[data-toggle="tooltip"]').tooltip();
-    var editor = new EpicEditor({
-        basePath: "//cdn.bootcss.com/epiceditor/0.2.2",
-        clientSideStorage: false,
-        theme: {
-            base: '/themes/base/epiceditor.css',
-            preview: '/themes/preview/github.css',
-            editor: '/themes/editor/epic-dark.css'
-        },
-        autogrow: {
-            minHeight: 250
-        },
-        button: {
-            bar: true
-        }
-    }).load();
-});
-</script>
+<script src="{% static 'blog/js/edit_post.js' %}"></script>
 {% endblock %}
