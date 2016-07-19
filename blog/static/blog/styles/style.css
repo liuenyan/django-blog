@@ -11,7 +11,7 @@ body > div.container {
 
 ul.posts {
     list-style-type: none;
-    padding: 0px; 
+    padding: 0px;
 }
 
 li.post {
@@ -150,4 +150,13 @@ img.align-center {
     text-align: center;
     font-size: 18px;
     display: block;
+}
+
+#id_categories, #id_tags {
+    list-style-type: none;
+}
+
+#id_categories > li, #id_tags > li {
+    display: inline;
+    margin: 10px;
 }
