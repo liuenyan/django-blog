@@ -1,56 +1,56 @@
 {% load staticfiles blog_extras %}
 <!DOCTYPE html>
 <html lang="zh-CN">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
-        <title>{% block title %}{% endblock %}</title>
-        {% block styles %}
-        <!-- Bootstrap -->
-        <link href="//cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
-        <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
-        <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-        <!--[if lt IE 9]>
-            <script src="//cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-            <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
-        <![endif]-->
-        <link href="{% static 'blog/styles/style.css' %}" rel="stylesheet">
-        {% endblock %}
-    </head>
-    <body>
-        {% block navbar %}
-        {% show_navbar 'home' user %}
-        {% endblock %}
-        <div class="container">
-            {% if messages %}
-            <div class="row">
-                <!-- message -->
-                {% for message in messages %}
-                <div class="alert {% if message.level_tag %}{{ message.level_tag | alert_class }}{% endif %} alert-dismissible" role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    {{ message }}
-                </div>
-                {% endfor %}
-            </div>
-            {% endif %}
-            <div class="row">
-            {% block content %}
-            {% endblock %}
-            </div>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>{% block title %}{% endblock %}</title>
+    {% block styles %}
+    <!-- Bootstrap -->
+    <link href="//cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+    <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="//cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <link href="{% static 'blog/styles/style.css' %}" rel="stylesheet">
+    {% endblock %}
+  </head>
+  <body>
+    {% block navbar %}
+    {% show_navbar 'home' user %}
+    {% endblock %}
+    <div class="container">
+      {% if messages %}
+      <div class="row">
+        <!-- message -->
+        {% for message in messages %}
+        <div class="alert {% if message.level_tag %}{{ message.level_tag | alert_class }}{% endif %} alert-dismissible" role="alert">
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          {{ message }}
         </div>
-        <footer class="page-footer">
-            <p>&copy; 2016 by <a href="https://github.com/liuenyan/">Enyan Liu</a>. Powered by <a href="https://www.djangoproject.com/">Django</a> &amp; <a href="https://www.getbootstrap.com/">Bootstrap</a>.</p>
-        </footer>
-        {% block modals %}
+        {% endfor %}
+      </div>
+      {% endif %}
+      <div class="row">
+        {% block content %}
         {% endblock %}
-        {% block scripts %}
-        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-        <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
-        <!-- Include all compiled plugins (below), or include individual files as needed -->
-        <script src="//cdn.bootcss.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-        {% endblock %}
-    </body>
+      </div>
+    </div>
+    <footer class="page-footer">
+      <p>&copy; 2016 by <a href="https://github.com/liuenyan/">Enyan Liu</a>. Powered by <a href="https://www.djangoproject.com/">Django</a> &amp; <a href="https://www.getbootstrap.com/">Bootstrap</a>.</p>
+    </footer>
+    {% block modals %}
+    {% endblock %}
+    {% block scripts %}
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="//cdn.bootcss.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    {% endblock %}
+  </body>
 </html>
