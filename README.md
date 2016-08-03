@@ -23,4 +23,18 @@
    ```shell
    npm install
    ```
+
+## 数据库初始化
+
+1. 执行数据库迁移：
    
+   ```shell
+   ./manage.py migrate
+   ```
+
+2. 创建超级用户，根据提示完成用户的创建：
+   
+   ```shell
+   ./manage.py createsuperuser
+   ```
+    
