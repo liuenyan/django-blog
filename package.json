@@ -1,0 +1,28 @@
+{
+  "name": "django-blog",
+  "version": "1.0.0",
+  "description": "Personal blog powered by django web framework.",
+  "main": "gulpfile.js",
+  "dependencies": {},
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-minify-css": "^1.2.4",
+    "gulp-uglify": "^2.0.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/liuenyan/django-blog.git"
+  },
+  "keywords": [
+    "django"
+  ],
+  "author": "Enyan Liu",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/liuenyan/django-blog/issues"
+  },
+  "homepage": "https://github.com/liuenyan/django-blog#readme"
+}

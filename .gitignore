@@ -66,3 +66,9 @@ venv/*
 
 #sqlite
 db.sqlite3
+
+#node_modules
+node_modules/
+
+#dist css & javascript
+!blog/static/blog/dist/
