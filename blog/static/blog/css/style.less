@@ -1,0 +1,140 @@
+@border-color: #ddd;
+@bg-color: #f5f5f5;
+
+.border-bottom-mixin(@color, @style, @width){
+  border-bottom-color: @color;
+  border-bottom-style: @style;
+  border-bottom-width: @width;
+}
+
+html {
+  font-family: "Helvetica Neue", "Luxi Sans", "Droid Sans", "DejaVu Sans",
+    Tahoma, "Hiragino Sans GB", "Microsoft Yahei", "WenQuanYi Micro Hei",
+    "WenQuanYi Zen Hei", sans-serif;
+  height: 100%;
+}
+
+body {
+  height: 100%;
+  > div.container {
+    min-height: 100%;
+    padding-top: 50px; /* for navbar */
+    padding-bottom: 80px; /*for footer */
+  }
+  > footer.page-footer {
+    height: 80px;
+    padding: 10px;
+    margin-top: -80px;
+    text-align: center;
+    background-color: @bg-color;
+    border-top-color:@border-color;
+  }
+}
+
+ul.posts {
+  list-style-type: none;
+  padding: 0;
+  > li {
+    padding: 10px 0;
+    .border-bottom-mixin(@border-color, solid, 2px);
+  }
+}
+
+.post-title {
+  margin: 30px 0;
+  a {
+    text-decoration: none;
+  }
+}
+
+.post-body { margin: 30px 0 }
+
+.post-meta {
+  background-color: @bg-color;
+  > ul {
+    list-style-type: none;
+    padding: 10px 0;
+    > li {
+      display: inline;
+      margin: 5px;
+      > span > a {
+        color: #eee;
+      }
+    }
+  }
+}
+
+.post-controls {
+  min-height: 50px;
+  > a {
+    margin: 2px;
+  }
+}
+
+ul.comments {
+  margin: 15px 0;
+  padding: 15px 0;
+  list-style-type: none;
+  > li {
+    .border-bottom-mixin(@border-color, solid, 2px);
+    min-height: 80px;
+  }
+  .comment-odd { background-color: @bg-color }
+  .comment-even { background-color: #fff }
+  > li span a {
+    color: #eee;
+  }
+  .comment-avatar {
+    position: absolute;
+    margin: 10px 0;
+  }
+  .comment-body {
+    margin: 0 10px 0 70px;
+    padding: 10px 0;
+  }
+}
+
+ul.sidebar {
+  margin: 10px 0;
+  padding: 10px 10px;
+  border-radius: 5px;
+  list-style-type: none;
+  > li {
+    padding: 10px;
+    .border-bottom-mixin(@border-color, solid, 2px);
+    background-color: @bg-color;
+    > h4 { padding: 10px }
+    > ul {
+      list-style-type: none;
+      padding: 10px 36px;
+    }
+  }
+}
+
+img.align-center {
+  display: block;
+  margin: 20px auto;
+}
+
+.toc {
+  .border-bottom-mixin(@bg-color, solid, 1px);
+  ul {
+    list-style-type: none;
+    padding-left: 25px;
+    font-size: 18px;
+  }
+}
+
+.toctitle {
+  text-align: center;
+  font-size: 18px;
+  display: block;
+}
+
+#id_categories, #id_tags { list-style-type: none }
+
+#id_categories > li,
+#id_tags > li {
+  display: inline;
+  margin: 10px;
+}
