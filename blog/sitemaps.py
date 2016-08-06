@@ -1,7 +1,11 @@
+"""
+定义站点地图。
+"""
 from django.contrib.sitemaps import Sitemap
-from .models import Post
+from blog.models import Post
 
 class StaticSitemap(Sitemap):
+    """静态链接的站点地图"""
     changefreq = 'daily'
     priority = 0.5
 
@@ -13,6 +17,7 @@ class StaticSitemap(Sitemap):
         return reverse(item)
 
 class PostSitemap(Sitemap):
+    """文章详情页面的站点地图"""
     changefreq = 'never'
     priority = 0.5
 

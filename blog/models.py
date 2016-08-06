@@ -1,9 +1,13 @@
+"""
+这个文件定义 blog 应用的数据模型。
+"""
 from django.db import models
 from django.contrib.sitemaps import ping_google
 
 # Create your models here.
 
 class Tag(models.Model):
+    """标签的数据模型"""
     tag = models.CharField(max_length=256, unique=True)
 
     def __str__(self):
@@ -11,6 +15,7 @@ class Tag(models.Model):
 
 
 class Category(models.Model):
+    """分类的数据模型"""
     category = models.CharField(max_length=256, unique=True)
 
     def __str__(self):
@@ -18,6 +23,7 @@ class Category(models.Model):
 
 
 class Post(models.Model):
+    """文章的数据模型"""
     title = models.CharField(max_length=128)
     slug = models.SlugField(unique=True)
     creation_time = models.DateTimeField(auto_now_add=True)
@@ -45,6 +51,7 @@ class Post(models.Model):
 
 
 class Comment(models.Model):
+    """评论的数据模型"""
     name = models.CharField(max_length=256)
     email = models.EmailField()
     url = models.URLField(blank=True)
@@ -57,6 +64,7 @@ class Comment(models.Model):
 
 
 class Link(models.Model):
+    """链接的数据模型"""
     name = models.CharField(max_length=128)
     description = models.CharField(max_length=128)
     link = models.URLField()

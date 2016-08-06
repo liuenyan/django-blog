@@ -1,9 +1,12 @@
+"""
+这个文件定义了一些有用的工具函数。
+"""
+import bleach
+import markdown
 from django.contrib.auth.models import User
 from faker import Factory
-import bleach
 from bleach_whitelist import generally_xss_safe
-import markdown
-from .models import Post, Comment
+from blog.models import Post, Comment
 
 def generate_fake_posts(nums=50):
     fake = Factory.create('en_US')
@@ -15,7 +18,6 @@ def generate_fake_posts(nums=50):
         )
         post.save()
         generate_fake_comments(post)
-
 
 def generate_fake_comments(post, nums=10):
     fake = Factory.create('en_US')

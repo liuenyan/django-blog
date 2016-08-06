@@ -1,3 +1,7 @@
+"""
+博客应用的视图函数。
+"""
+import json
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, InvalidPage
@@ -5,13 +9,13 @@ from django.contrib import messages
 from django.conf import settings
 from django.http import HttpResponse
 from django.views.decorators.http import require_POST
-import json
-from .models import Post, Comment, Tag, Category
-from .forms import PostForm, CommentForm, EditProfileForm, CategoryForm, TagForm
-from .tools import clean_html_tags, convert_to_html
+from blog.models import Post, Comment, Tag, Category
+from blog.forms import PostForm, CommentForm, EditProfileForm, CategoryForm, TagForm
+from blog.tools import clean_html_tags, convert_to_html
 # Create your views here.
 
 def index(request):
+    """首页的视图函数"""
     post_list = Post.objects.all().order_by('-id')
     paginator = Paginator(post_list, 10)
     page = request.GET.get('page')
@@ -22,7 +26,8 @@ def index(request):
     return render(request, "index.html", context={'posts': posts})
 
 
-def post(request, slug):
+def post_detail(request, slug):
+    """文章页面的视图函数"""
     post = get_object_or_404(Post, slug=slug)
     context = {
         'comments_provider': settings.DEFAULT_COMMENTS_PROVIDER,
@@ -52,6 +57,7 @@ def post(request, slug):
 
 @login_required
 def edit_post(request, slug):
+    """文章编辑页面的视图函数"""
     post = get_object_or_404(Post, slug=slug)
     if request.user.id != post.author.id:
         return redirect('post', slug)
@@ -80,6 +86,7 @@ def edit_post(request, slug):
 
 @login_required
 def new_post(request):
+    """文章新建页面的视图函数"""
     if request.method == 'POST':
         post_form = PostForm(request.POST)
         if post_form.is_valid():
@@ -108,6 +115,7 @@ def new_post(request):
 
 @login_required
 def delete_post(request, slug):
+    """文章删除的视图函数"""
     post = get_object_or_404(Post, id=slug)
     if request.user.id != post.author.id:
         return redirect('post', slug)
@@ -115,7 +123,8 @@ def delete_post(request, slug):
     return redirect('index')
 
 
-def category(request, category_name):
+def category_posts(request, category_name):
+    """分类页面的视图函数"""
     category_object = get_object_or_404(Category, category=category_name)
     post_list = category_object.post_set.order_by('-id')
     paginator = Paginator(post_list, 10)
@@ -131,6 +140,7 @@ def category(request, category_name):
 @login_required
 @require_POST
 def new_category(request):
+    """新建分类的处理函数"""
     form = CategoryForm(request.POST)
     if form.is_valid():
         category = form.save()
@@ -153,6 +163,7 @@ def new_category(request):
 @login_required
 @require_POST
 def new_tag(request):
+    """新建标签的处理函数"""
     form = TagForm(request.POST)
     if form.is_valid():
         tag = form.save()
@@ -172,7 +183,8 @@ def new_tag(request):
         return HttpResponse(json.dumps(result), content="text/json")
 
 
-def tag(request, tagname):
+def tag_posts(request, tagname):
+    """标签页面的视图函数"""
     tag_object = get_object_or_404(Tag, tag=tagname)
     post_list = tag_object.post_set.order_by('-id')
     paginator = Paginator(post_list, 10)
@@ -186,7 +198,11 @@ def tag(request, tagname):
 
 
 def archive(request, year, month):
-    post_list = Post.objects.filter(creation_time__year=year, creation_time__month=month).order_by('-id')
+    """归档页面的视图函数"""
+    post_list = Post.objects.filter(
+        creation_time__year=year,
+        creation_time__month=month
+    ).order_by('-id')
     paginator = Paginator(post_list, 10)
     page = request.GET.get('page')
     try:
@@ -199,11 +215,13 @@ def archive(request, year, month):
 
 @login_required
 def profile(request):
+    """个人资料页面的视图函数"""
     return render(request, 'profile.html')
 
 
 @login_required
 def change_profile(request):
+    """修改个人资料的视图函数"""
     current_user = request.user
     if request.method == 'POST':
         form = EditProfileForm(request.POST)

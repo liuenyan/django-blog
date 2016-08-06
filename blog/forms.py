@@ -1,9 +1,13 @@
+"""
+这个文件定义表单信息。
+"""
 from django import forms
 from django.forms.widgets import CheckboxSelectMultiple
-from .models import Post, Category, Tag
+from blog.models import Post, Category, Tag
 
 
 class PostForm(forms.ModelForm):
+    """文章内容编辑表单"""
     class Meta:
         model = Post
         fields = ['title', 'slug', 'categories', 'tags', 'body_markdown']
@@ -39,6 +43,7 @@ class PostForm(forms.ModelForm):
         }
 
 class CategoryForm(forms.ModelForm):
+    """"分类表单"""
     class Meta:
         model = Category
         fields = ['category',]
@@ -48,6 +53,7 @@ class CategoryForm(forms.ModelForm):
 
 
 class TagForm(forms.ModelForm):
+    """标签表单"""
     class Meta:
         model = Tag
         fields = ['tag',]
@@ -57,6 +63,7 @@ class TagForm(forms.ModelForm):
 
 
 class CommentForm(forms.Form):
+    """评论表单"""
     name = forms.CharField(
         label='姓名',
         max_length=256,
@@ -84,6 +91,7 @@ class CommentForm(forms.Form):
 
 
 class EditProfileForm(forms.Form):
+    """个人资料编辑表单"""
     first_name = forms.CharField(
         label='名字',
         max_length=30
