@@ -1,0 +1,9 @@
+Django==1.10
+pytz==2016.6.1
+django-widget-tweaks==1.4.1
+bleach==1.4.3
+six==1.10.0
+html5lib==0.9999999
+-e git+https://github.com/liuenyan/bleach-whitelist.git@master#egg=bleach-whitelist
+Markdown==2.6.6
+pymdown-extensions==1.1

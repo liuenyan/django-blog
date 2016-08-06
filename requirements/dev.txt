@@ -1,0 +1,4 @@
+django-debug-toolbar==1.5
+sqlparse==0.2.0
+fake-factory==0.5.10
+python-dateutil==2.5.3
